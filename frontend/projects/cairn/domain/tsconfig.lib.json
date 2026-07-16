@@ -1,0 +1,35 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../out-tsc/lib",
+    "declaration": true,
+    "declarationMap": true,
+    "types": [],
+
+    /* @cairn/domain is the only library that depends on the other two, so it is
+       the only one that needs this.
+
+       The root tsconfig maps @cairn/* to SOURCE, which is what makes `ng build
+       cairn-app` and `ng test` fast — no library has to be built first. But
+       ng-packagr compiles this library on its own, and pointed at another
+       library's source it tries to compile that too, failing deep inside the
+       TypeScript program with "Cannot destructure property 'pos' of
+       'file.referencedFiles[index]'" — an error that names neither library.
+
+       Pointed at the built packages instead, they resolve as ordinary
+       dependencies, which is what they are to ng-packagr. This overrides the
+       inherited `paths` WHOLESALE rather than merging, so both entries must be
+       listed even though only @cairn/api was the original culprit.
+
+       Consequence: building this library requires the other two to be built
+       first. `ng build cairn-app` is unaffected and still needs no prebuild. */
+    "paths": {
+      "@cairn/api": ["../../../dist/cairn/api"],
+      "@cairn/components": ["../../../dist/cairn/components"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
+}

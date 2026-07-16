@@ -1,0 +1,44 @@
+:host {
+  display: block;
+}
+
+.form {
+  display: grid;
+  gap: var(--s3);
+}
+
+.form__input {
+  width: 100%;
+  padding: var(--s3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  /* Never narrower than a thumb-friendly target on a phone. */
+  min-height: var(--tap-min);
+}
+
+.form__input:focus-visible {
+  outline: 2px solid var(--line-strong);
+  outline-offset: 2px;
+}
+
+.form__input:disabled {
+  background: var(--surface-sunk);
+  color: var(--text-muted);
+}
+
+.form__error {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--negative);
+}
+
+.form__actions {
+  display: flex;
+  justify-content: flex-end;
+}

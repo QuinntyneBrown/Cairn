@@ -1,0 +1,61 @@
+/* Flat: a bordered pill and a dot. State is a fill swap, never a shadow. */
+
+:host {
+  display: inline-flex;
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s1) var(--s3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.live__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
+  border-radius: var(--radius-pill);
+  /* Offline: a hollow dot. Present, unalarming, obviously not lit. */
+  border: 1px solid var(--text-faint);
+}
+
+/* Live is the only state that earns a fill and full-strength text. */
+.live--on {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.live--on .live__dot {
+  background: var(--positive);
+  border-color: var(--positive);
+}
+
+.live--waiting .live__dot {
+  background: var(--warn);
+  border-color: var(--warn);
+  animation: live-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Someone who asked for less motion is told by the label, which says the same
+   thing the pulse does. */
+@media (prefers-reduced-motion: reduce) {
+  .live--waiting .live__dot {
+    animation: none;
+  }
+}

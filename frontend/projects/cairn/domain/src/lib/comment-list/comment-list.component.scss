@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+.empty {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.comments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s4);
+}
+
+/* Separated by a hairline rather than by cards-within-cards. */
+.comment + .comment {
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.comment__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3);
+  margin-bottom: var(--s1);
+}
+
+.comment__author {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.comment__when {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  flex: none;
+}
+
+.comment__body {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: var(--measure);
+  /* Comments are user text: a pasted URL must not widen the page. */
+  overflow-wrap: anywhere;
+  /* Newlines the author typed are meaning, not noise. */
+  white-space: pre-wrap;
+}

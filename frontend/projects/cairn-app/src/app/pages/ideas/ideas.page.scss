@@ -1,0 +1,82 @@
+/* Mobile-first: one column of cards, two up at 64rem. The filter chips scroll
+   sideways on a phone rather than wrapping into a second row that shoves the list
+   down the page. */
+
+:host {
+  display: block;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  margin-bottom: var(--s5);
+}
+
+.head__title {
+  margin: var(--s1) 0 0;
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.filters {
+  display: flex;
+  gap: var(--s2);
+  margin-bottom: var(--s5);
+  overflow-x: auto;
+  /* The row scrolls on a phone; the padding keeps the focus ring from clipping. */
+  padding: var(--s1);
+  margin-left: calc(var(--s1) * -1);
+  scrollbar-width: none;
+}
+
+.filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter {
+  flex: none;
+  min-height: var(--tap-min);
+  padding: var(--s2) var(--s4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.filter:hover {
+  color: var(--text);
+}
+
+/* Selection is a flat fill swap — no shadow, no underline. */
+.filter--on {
+  background: var(--accent);
+  border-color: var(--line-strong);
+  color: var(--text-on-fill);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s4);
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  padding: var(--s8) 0;
+}
+
+@media (min-width: 64rem) {
+  .list {
+    grid-template-columns: 1fr 1fr;
+  }
+}

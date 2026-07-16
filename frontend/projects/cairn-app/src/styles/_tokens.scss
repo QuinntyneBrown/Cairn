@@ -1,0 +1,108 @@
+/* ============================================================================
+   CAIRN — Design tokens
+
+   Everything here is a CSS custom property, never an SCSS variable. The
+   component libraries (@cairn/components) are compiled independently by
+   ng-packagr and cannot see this file at build time — custom properties are
+   resolved by the browser at runtime, so they cross that boundary. SCSS
+   variables would not.
+
+   TWO TIERS:
+     Tier 1 (--ft-*) is the FaithTech brand palette. Raw, authoritative,
+       extracted from their live stylesheet. Never reference these from a
+       component — they carry no meaning, only a colour.
+     Tier 2 is the semantic layer. Components reference ONLY tier 2. Rebranding
+       is then a tier-1 edit, not a repo-wide find-and-replace.
+
+   THE CONTRAST RULE — read before adding any colour rule:
+     Toronto yellow (#FFF737) on white is roughly 1.1:1. It is invisible. It is
+     NEVER text on a light surface and never a meaningful thin border — the only
+     legitimate use is a LARGE FLAT FILL. The same trap applies to --positive
+     (#32A432): white text on it lands near 3.0:1 and fails AA.
+     This is why --text-on-fill exists and is warm off-black: every saturated
+     fill in this app takes dark text, without exception.
+
+   ========================================================================= */
+
+// BREAKPOINTS — mobile-first. The base rules are the phone; only ever widen
+// with min-width. There is deliberately no shared mixin (one import fewer, and
+// the query reads where it applies), so the three values live here as the
+// single source of truth and get written raw in each component:
+//
+//     @media (min-width: 48rem) { }    768px — tablet / landscape phone
+//     @media (min-width: 64rem) { }   1024px — small laptop
+//     @media (min-width: 80rem) { }   1280px — desktop
+
+:root {
+  /* --- Tier 1: FaithTech brand ------------------------------------------ */
+  --ft-dark: #16160c;
+  --ft-light: #ffffff;
+  --ft-toronto: #fff737;
+  --ft-orange-100: #ffb300;
+  --ft-orange-200: #f05228;
+  --ft-green-200: #32a432;
+  --ft-blue-200: #1d8fb9;
+  --ft-grey-100: #f5f0f0;
+  --ft-grey-200: #e9e7e4;
+  --ft-grey-300: #e4e0d8;
+
+  /* --- Tier 2: semantic roles ------------------------------------------- */
+
+  /* Surfaces */
+  --surface: var(--ft-light);
+  --surface-sunk: var(--ft-grey-100);
+  --surface-inverse: var(--ft-dark);
+
+  /* Text */
+  --text: var(--ft-dark);
+  --text-muted: #16160cb8;
+  --text-faint: #16160c73;
+  --text-on-inverse: var(--ft-light);
+
+  /* Lines. Elevation in Cairn is a hairline, never a shadow. */
+  --line: #16160c1f;
+  --line-strong: var(--ft-dark);
+
+  /* Meaning */
+  --accent: var(--ft-toronto);
+  --positive: var(--ft-green-200);
+  --negative: var(--ft-orange-200);
+  --info: var(--ft-blue-200);
+  --warn: var(--ft-orange-100);
+
+  /* The one text colour that sits on any saturated fill above. See the
+     contrast rule — this is dark on purpose and must stay dark. */
+  --text-on-fill: var(--ft-dark);
+
+  /* --- Type -------------------------------------------------------------
+     Noi Grotesk and Avril are FaithTech's commercial faces and we are not
+     licensed for them. They are named FIRST anyway: the day a licence lands,
+     dropping in @font-face is the whole change and nothing else moves. Until
+     then the browser falls through to the free substitutes loaded in
+     index.html (Hanken Grotesk / Inter / Newsreader). */
+  --font-display: 'Noi Grotesk', 'Hanken Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-accent: 'Avril', 'Newsreader', Palatino, serif;
+
+  /* --- Space ------------------------------------------------------------ */
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 0.75rem;
+  --s4: 1rem;
+  --s5: 1.5rem;
+  --s6: 2rem;
+  --s7: 3rem;
+  --s8: 4rem;
+  --s9: 6rem;
+
+  /* --- Radii — generous on purpose; this is not Liturgy's blocky 4px. --- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* --- Metrics ---------------------------------------------------------- */
+  --tap-min: 3.5rem; /* every interactive target clears this on touch */
+  --measure: 34rem; /* comfortable reading column                    */
+}

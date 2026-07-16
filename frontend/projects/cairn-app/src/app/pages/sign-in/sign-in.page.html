@@ -1,0 +1,50 @@
+<main class="auth">
+  <div class="auth__card">
+    <div class="auth__brand">
+      <span class="auth__mark" aria-hidden="true"></span>
+      <span class="auth__name">Cairn</span>
+    </div>
+
+    <h1 class="auth__title">Sign in</h1>
+    <p class="auth__lede">Put an idea to the people it affects, and count what comes back.</p>
+
+    @if (error(); as errorText) {
+      <div class="auth__error">
+        <cai-notice kind="error">{{ errorText }}</cai-notice>
+      </div>
+    }
+
+    <form class="auth__form" [formGroup]="form" (ngSubmit)="submit()">
+      <cai-field
+        label="Email"
+        for="email"
+        [error]="
+          form.controls.email.touched && form.controls.email.invalid ? 'Enter your email.' : ''
+        "
+      >
+        <input id="email" type="email" autocomplete="email" formControlName="email" />
+      </cai-field>
+
+      <cai-field
+        label="Password"
+        for="password"
+        [error]="
+          form.controls.password.touched && form.controls.password.invalid
+            ? 'Enter your password.'
+            : ''
+        "
+      >
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          formControlName="password"
+        />
+      </cai-field>
+
+      <cai-button type="submit" [full]="true" [disabled]="submitting()">
+        {{ submitting() ? 'Signing in…' : 'Sign in' }}
+      </cai-button>
+    </form>
+  </div>
+</main>

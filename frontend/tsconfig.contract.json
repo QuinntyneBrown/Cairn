@@ -1,0 +1,13 @@
+/* Typecheck config for the contract check. This half of `npm run test:contract` is
+   what gives `satisfies Record<keyof T, true>` its teeth: vitest alone would strip
+   the types without checking them. See e2e/contract/api-contract.spec.ts. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/contract",
+    "types": ["vitest/globals", "node"],
+    "resolveJsonModule": true,
+    "noEmit": true
+  },
+  "include": ["e2e/contract/**/*.ts"]
+}

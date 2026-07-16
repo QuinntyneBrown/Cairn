@@ -1,0 +1,183 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "cairn-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        }
+      },
+      "root": "projects/cairn-app",
+      "sourceRoot": "projects/cairn-app/src",
+      "prefix": "cai",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/cairn-app/src/main.ts",
+            "index": "projects/cairn-app/src/index.html",
+            "tsConfig": "projects/cairn-app/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/cairn-app/public"
+              }
+            ],
+            "styles": ["projects/cairn-app/src/styles.scss"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "700kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 4205
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "cairn-app:build:production"
+            },
+            "development": {
+              "buildTarget": "cairn-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/cairn-app/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "@cairn/api": {
+      "projectType": "library",
+      "root": "projects/cairn/api",
+      "sourceRoot": "projects/cairn/api/src",
+      "prefix": "cai",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/cairn/api/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/cairn/api/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/cairn/api/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "@cairn/components": {
+      "projectType": "library",
+      "root": "projects/cairn/components",
+      "sourceRoot": "projects/cairn/components/src",
+      "prefix": "cai",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/cairn/components/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/cairn/components/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/cairn/components/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "@cairn/domain": {
+      "projectType": "library",
+      "root": "projects/cairn/domain",
+      "sourceRoot": "projects/cairn/domain/src",
+      "prefix": "cai",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/cairn/domain/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/cairn/domain/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/cairn/domain/tsconfig.spec.json"
+          }
+        }
+      }
+    }
+  }
+}

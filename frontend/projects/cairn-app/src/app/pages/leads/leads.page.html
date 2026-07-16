@@ -1,0 +1,58 @@
+<header class="head">
+  <p class="eyebrow">People</p>
+  <h1 class="head__title">Leads</h1>
+  <p class="lede measure">Everyone who can be sent a voting link.</p>
+</header>
+
+@if (loading()) {
+  <div class="state" data-testid="leads-loading">
+    <cai-spinner label="Loading leads" />
+  </div>
+} @else if (failed()) {
+  <cai-notice kind="error" title="We could not load the leads" data-testid="leads-error">
+    Something went wrong reaching the server. Try again.
+  </cai-notice>
+} @else if (rows().length === 0) {
+  <cai-empty-state
+    title="No leads yet"
+    message="Leads are added by an administrator. Once they exist you can send them voting links."
+    data-testid="leads-empty"
+  />
+} @else {
+  <!-- Said once, at the top, rather than as a tooltip on every row. -->
+  @if (linkOnlyCount() > 0) {
+    <cai-notice
+      kind="info"
+      title="Most leads vote by link, not by logging in"
+      data-testid="leads-note"
+    >
+      {{ linkOnlyCount() }} of {{ rows().length }}
+      {{ linkOnlyCount() === 1 ? 'lead has' : 'leads have' }} no password. That is
+      normal: they are sent a voting link and answer from it. Nothing is wrong with
+      their account and there is nothing to fix.
+    </cai-notice>
+  }
+
+  <ul class="leads" data-testid="leads-list">
+    @for (lead of rows(); track lead.id) {
+      <li class="lead" [attr.data-testid]="'lead-' + lead.id">
+        <span class="lead__who">
+          <span class="lead__name">{{ lead.displayName }}</span>
+          <span class="lead__email">{{ lead.email }}</span>
+        </span>
+
+        <span class="lead__tags">
+          <span class="lead__role">{{ lead.role }}</span>
+
+          @if (lead.canSignIn) {
+            <span class="lead__access" data-testid="lead-can-sign-in">Can sign in</span>
+          } @else {
+            <span class="lead__access lead__access--link" data-testid="lead-link-only">
+              Link only
+            </span>
+          }
+        </span>
+      </li>
+    }
+  </ul>
+}

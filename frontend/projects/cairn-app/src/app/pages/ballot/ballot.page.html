@@ -1,0 +1,130 @@
+<main class="ballot dot-grid" data-testid="ballot-page">
+  <div class="ballot__inner">
+    @if (page() === 'loading') {
+      <div class="ballot__loading" data-testid="ballot-loading">
+        <cai-spinner label="Loading your ballot" />
+      </div>
+    } @else if (page() === 'failed') {
+      <cai-notice kind="error" title="We could not load this ballot" data-testid="ballot-error">
+        Something went wrong on our side, not yours. Check your connection and try again.
+      </cai-notice>
+    } @else {
+      <!-- The page's state in one word, for assistive tech and for the E2E suite.
+           Not shown: the notice below says the same thing in language a person
+           actually wants to read. -->
+      <p class="sr-only" role="status" data-testid="ballot-status">{{ status() }}</p>
+
+      <div class="ballot__brand">
+        <span class="ballot__mark" aria-hidden="true"></span>
+        <span class="ballot__name">Cairn</span>
+      </div>
+
+      @if (idea(); as current) {
+        <cai-idea-statement
+          [eyebrow]="leadName() ? 'Hi ' + leadName() + ' — your call' : 'Your call'"
+          [title]="current.title"
+          [description]="current.description"
+        />
+      }
+
+      @if (notice(); as message) {
+        <cai-notice [kind]="message.kind" [title]="message.title" data-testid="ballot-notice">
+          {{ message.body }}
+        </cai-notice>
+      }
+
+      @if (isOpen() && idea(); as current) {
+        <section class="ballot__answer" aria-labelledby="answer-heading">
+          <h2 class="eyebrow" id="answer-heading">Your answer</h2>
+
+          <cai-ballot-response
+            [idea]="current"
+            [value]="answer()"
+            [disabled]="submitting()"
+            (answered)="onAnswered($event)"
+          />
+        </section>
+
+        @if (submitted()) {
+          <cai-notice kind="success" title="Your answer is in" data-testid="ballot-thanks">
+            Thanks. You can change it any time before voting closes.
+          </cai-notice>
+        }
+
+        @if (submitFailed()) {
+          <cai-notice kind="error" title="That did not send" data-testid="ballot-submit-error">
+            Your answer has not been recorded. Try again.
+          </cai-notice>
+        }
+
+        <div class="ballot__submit">
+          <!-- Dark, not the accent. Yellow means "this is your answer" on this
+               page, and a yellow button beside a yellow selection asks the voter
+               to work out which of two identical shapes they just pressed. -->
+          <cai-button
+            variant="secondary"
+            [full]="true"
+            [disabled]="!canSubmit()"
+            (click)="submit()"
+            data-testid="ballot-submit"
+          >
+            {{ submitting() ? 'Sending…' : submitLabel() }}
+          </cai-button>
+        </div>
+      }
+
+      @if (idea()) {
+        <section class="ballot__comments" aria-labelledby="comments-heading">
+          <h2 class="eyebrow" id="comments-heading">Discussion</h2>
+
+          @if (comments().length) {
+            <ul class="comments" data-testid="ballot-comments">
+              @for (comment of comments(); track comment.id) {
+                <li class="comments__item">
+                  <p class="comments__author">{{ comment.authorName }}</p>
+                  <p class="comments__body">{{ comment.body }}</p>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="faint">No comments yet.</p>
+          }
+
+          @if (isOpen()) {
+            <form class="comment-form" (ngSubmit)="postComment()">
+              <label class="sr-only" for="comment-body">Add a comment</label>
+              <textarea
+                class="comment-form__input"
+                id="comment-body"
+                rows="3"
+                placeholder="Add a thought (optional)"
+                [ngModel]="commentBody()"
+                (ngModelChange)="commentBody.set($event)"
+                name="body"
+                [disabled]="posting()"
+                data-testid="comment-input"
+              ></textarea>
+
+              @if (commentFailed()) {
+                <cai-notice kind="error" title="That comment did not send">
+                  Try again.
+                </cai-notice>
+              }
+
+              <!-- Ghost: commenting is optional and must not compete with the
+                   answer, which is the only thing this page really needs. -->
+              <cai-button
+                type="submit"
+                variant="ghost"
+                [disabled]="!commentBody().trim() || posting()"
+                data-testid="comment-submit"
+              >
+                {{ posting() ? 'Posting…' : 'Post comment' }}
+              </cai-button>
+            </form>
+          }
+        </section>
+      }
+    }
+  </div>
+</main>

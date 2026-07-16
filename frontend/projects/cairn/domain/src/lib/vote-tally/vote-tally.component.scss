@@ -1,0 +1,181 @@
+/* Flat throughout: a bar is a fill on a track, elevation is a hairline, and there
+   is not a shadow or a gradient anywhere. Mobile-first; the bars are fluid and
+   need no breakpoint, the scale columns tighten up on a phone. */
+
+:host {
+  display: block;
+}
+
+.tally__none {
+  margin: 0 0 var(--s4);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.tally__total {
+  margin: var(--s5) 0 0;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+/* --- Yes/No and Options ------------------------------------------------- */
+
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s4);
+}
+
+.bars__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3);
+  margin-bottom: var(--s2);
+}
+
+.bars__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  /* Long option labels wrap rather than shove the figures off the row —
+     `break-word`, not `anywhere`, so the label cannot be squeezed to one character
+     per line when the count and percentage claim their space. */
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.bars__figures {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex: none;
+}
+
+.bars__count {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.bars__percent {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.bars__track {
+  height: 1.5rem;
+  background: var(--surface-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.bars__fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+  /* A large flat fill is the one sanctioned use of Toronto yellow, and nothing is
+     printed on top of it — see the contrast rule in styles/_tokens.scss. */
+}
+
+/* A zero bar still occupies its row. Without this it would be invisible and the
+   row would read as a rendering fault rather than as "nobody chose this". */
+.bars__fill--zero {
+  width: 0;
+}
+
+/* --- Scale --------------------------------------------------------------- */
+
+.scale__cols {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: var(--s1);
+  align-items: end;
+}
+
+.scale__col {
+  display: grid;
+  gap: var(--s1);
+  justify-items: center;
+}
+
+.scale__count {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.scale__track {
+  /* The columns share a fixed height so the axis is fixed: all ten points are
+     always drawn, including the ones nobody picked. */
+  height: 7rem;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  background: var(--surface-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.scale__fill {
+  width: 100%;
+  background: var(--accent);
+  align-self: flex-end;
+}
+
+.scale__value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.scale__average {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  margin: var(--s5) 0 0;
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.scale__average-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.scale__average-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.scale__average-of {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+@media (min-width: 48rem) {
+  .scale__cols {
+    gap: var(--s2);
+  }
+
+  .scale__track {
+    height: 9rem;
+  }
+}

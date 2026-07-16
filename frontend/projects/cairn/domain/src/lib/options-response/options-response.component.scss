@@ -1,0 +1,61 @@
+.opts {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.opts__list {
+  display: grid;
+  gap: var(--s3);
+}
+
+.opts__choice {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  padding: var(--s4) var(--s5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.opts__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  /* Options are written by a human and can be long. Wrap, never truncate — a
+     clipped option is one a voter cannot weigh. */
+  overflow-wrap: anywhere;
+}
+
+.opts__choice:has(:focus-visible) {
+  outline: 3px solid var(--line-strong);
+  outline-offset: 2px;
+}
+
+.opts__choice--on {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--text-on-fill);
+}
+
+.opts:disabled .opts__choice {
+  cursor: default;
+  opacity: 0.6;
+}
+
+@media (hover: hover) {
+  .opts__choice:not(.opts__choice--on):hover {
+    border-color: var(--line-strong);
+  }
+
+  .opts:disabled .opts__choice:hover {
+    border-color: var(--line);
+  }
+}

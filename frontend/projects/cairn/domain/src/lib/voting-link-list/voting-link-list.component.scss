@@ -1,0 +1,221 @@
+/* Mobile-first. Each link is a stacked block on a phone and a row at 48rem. */
+
+:host {
+  display: block;
+}
+
+/* --- The fresh batch ----------------------------------------------------- */
+
+/* Deliberately the loudest thing on the panel. These URLs exist for exactly as
+   long as this element is on screen. */
+.fresh {
+  padding: var(--s4);
+  margin-bottom: var(--s5);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--accent);
+  color: var(--text-on-fill);
+}
+
+.fresh__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.fresh__warning {
+  margin: var(--s2) 0 var(--s4);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  /* Dark text on the accent fill — never white. See the contrast rule. */
+  color: var(--text-on-fill);
+}
+
+.fresh__list {
+  list-style: none;
+  margin: 0 0 var(--s4);
+  padding: 0;
+  display: grid;
+  gap: var(--s2);
+}
+
+.fresh__item {
+  display: grid;
+  gap: var(--s2);
+  padding: var(--s3);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+}
+
+.fresh__who {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.fresh__url {
+  margin: 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  /* The token is long and must not widen the page on a phone. */
+  overflow-wrap: anywhere;
+}
+
+.fresh__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+}
+
+/* --- The stored links ---------------------------------------------------- */
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin: 0 0 var(--s4);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.summary__figure {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  /* A CONTAINER query, not a media query, and the distinction is the whole point.
+     This list is full-width on a tablet and half-width on a laptop, because the
+     dashboard splits into two panels at 80rem. A viewport query cannot see that —
+     it would lay the row out horizontally at 1280px inside a panel barely wider
+     than a phone, which is precisely how the name column ended up rendering one
+     letter per line. Asking the container how much room it actually has is the
+     only question with a correct answer. */
+  container-type: inline-size;
+}
+
+.link {
+  display: grid;
+  gap: var(--s2);
+  padding: var(--s4) 0;
+  border-top: 1px solid var(--line);
+}
+
+.link--revoked {
+  /* Still listed — a revoked link is a fact about who was asked. */
+  opacity: 0.55;
+}
+
+.link__who {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+/* `break-word`, NOT `anywhere`. They look interchangeable and are not: `anywhere`
+   is allowed to shrink an element's min-content width to a single character, so a
+   grid track sized `1fr` next to `auto` columns collapses and renders a name one
+   letter per line. `break-word` breaks a long word only when it genuinely does not
+   fit, leaving min-content at the longest word. The URL below still needs
+   `anywhere` — a link token has no word boundaries to break at. */
+.link__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  overflow-wrap: break-word;
+}
+
+.link__email {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  overflow-wrap: break-word;
+}
+
+.link__state {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.link__flag {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2em 0.6em;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+}
+
+.link__flag--voted {
+  background: var(--positive);
+  color: var(--text-on-fill);
+  border-color: transparent;
+}
+
+.link__expiry {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.link__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.empty {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.note {
+  margin: var(--s4) 0 0;
+  padding-top: var(--s3);
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-faint);
+  max-width: var(--measure);
+}
+
+/* Only once the list itself has the room — measured on the list, not the window.
+   Below this the row stays stacked, which is the right answer on a phone AND in a
+   narrow panel on a wide screen. `minmax(9rem, …)` keeps a floor under the name so
+   it can never be squeezed to nothing by the buttons. */
+@container (min-width: 34rem) {
+  .link {
+    grid-template-columns: minmax(9rem, 1fr) auto auto;
+    align-items: center;
+    gap: var(--s4);
+  }
+
+  .link__actions {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (min-width: 48rem) {
+  .fresh__item {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--s4);
+  }
+
+  .fresh__item .fresh__url {
+    grid-column: 1;
+  }
+}

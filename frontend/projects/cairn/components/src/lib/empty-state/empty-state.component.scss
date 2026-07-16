@@ -1,0 +1,33 @@
+/* The dot grid does the work here: an empty region should read as ground that
+   is waiting for something, not as a broken panel. `.dot-grid` is a global
+   utility, so the class is applied in the template and painted from styles.scss
+   — the pattern itself is not redefined here. */
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--s2);
+  text-align: center;
+  padding: var(--s7) var(--s4);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface);
+}
+
+.empty__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.empty__message {
+  margin: 0;
+  max-width: var(--measure);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.empty__action:not(:empty) {
+  margin-top: var(--s3);
+}

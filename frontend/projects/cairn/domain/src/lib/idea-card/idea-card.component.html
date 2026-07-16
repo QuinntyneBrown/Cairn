@@ -1,0 +1,52 @@
+<cai-card>
+  <article class="idea" [attr.data-testid]="'idea-card-' + idea().id">
+    <div class="idea__chips">
+      <cai-chip [tone]="statusTone()" data-testid="idea-status">{{ idea().status }}</cai-chip>
+      <cai-chip tone="neutral" data-testid="idea-response-type">{{ responseLabel() }}</cai-chip>
+    </div>
+
+    <h2 class="idea__title">
+      <!-- The whole title is the target. A "view" link beside it would be a second
+           thing to aim at on a phone for no gain. -->
+      <a class="idea__link" [routerLink]="['/ideas', idea().id]" data-testid="idea-link">
+        {{ idea().title }}
+      </a>
+    </h2>
+
+    <dl class="idea__meta">
+      <div class="idea__metric">
+        <dt class="idea__metric-label">Turnout</dt>
+        <dd class="idea__metric-value" data-testid="idea-turnout">
+          <span class="idea__count">{{ idea().voteCount }}</span>
+          <span class="idea__of">of {{ idea().invitedCount }}</span>
+          @if (turnout(); as percent) {
+            <span class="idea__percent">{{ percent }}%</span>
+          }
+        </dd>
+      </div>
+
+      <div class="idea__when">
+        <dt class="sr-only">Voting window</dt>
+        <dd class="idea__when-value" data-testid="idea-window">
+          @switch (idea().status) {
+            @case ('Draft') {
+              Opens {{ idea().opensAt | date: 'd MMM, HH:mm' }}
+            }
+            @case ('Open') {
+              Closes {{ idea().closesAt | date: 'd MMM, HH:mm' }}
+            }
+            @case ('Closed') {
+              Closed {{ idea().closesAt | date: 'd MMM, HH:mm' }}
+            }
+          }
+        </dd>
+      </div>
+    </dl>
+
+    @if (idea().invitedCount === 0) {
+      <!-- The most common reason a tally sits at zero, said before anyone has to
+           wonder about it. -->
+      <p class="idea__hint" data-testid="idea-no-links">No voting links sent yet.</p>
+    }
+  </article>
+</cai-card>

@@ -1,0 +1,16 @@
+/* ============================================================================
+   CAIRN — Global stylesheet
+
+   A cairn is a stack of stones that marks a decision: someone stood here and
+   chose this way. The look follows from that — flat, plain, and built from
+   parts you can see the edges of. No shadows, no gradients: elevation is a
+   1px line, selection is a flat fill swap.
+
+   Order matters. Tokens first (everything downstream reads them), then the
+   reset, then base element styling, then utilities.
+   ========================================================================= */
+
+@use './styles/tokens';
+@use './styles/reset';
+@use './styles/base';
+@use './styles/utilities';

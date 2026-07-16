@@ -1,0 +1,5 @@
+/* A shell with no look of its own — the leaf it hosts owns every pixel. It exists
+   to fill its slot, so it must not introduce a box the leaves have to escape. */
+:host {
+  display: block;
+}

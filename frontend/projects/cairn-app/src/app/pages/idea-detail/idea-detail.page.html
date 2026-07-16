@@ -1,0 +1,92 @@
+@if (loading()) {
+  <div class="state" data-testid="detail-loading">
+    <cai-spinner label="Loading idea" />
+  </div>
+} @else if (failed()) {
+  <cai-notice kind="error" title="We could not load this idea" data-testid="detail-error">
+    It may have been deleted. <a routerLink="/ideas">Back to ideas</a>.
+  </cai-notice>
+} @else if (idea(); as loaded) {
+  <nav class="crumb">
+    <a routerLink="/ideas">← Ideas</a>
+  </nav>
+
+  <cai-idea-statement
+    [title]="loaded.title"
+    [description]="loaded.description"
+    [eyebrow]="loaded.status === 'Open' ? 'Open for answers' : loaded.status"
+  />
+
+  @if (actionError(); as message) {
+    <cai-notice kind="error" title="That did not work" data-testid="detail-action-error">
+      {{ message }}
+    </cai-notice>
+  }
+
+  <div class="actions">
+    <cai-button variant="secondary" [routerLink]="['/ideas', loaded.id, 'edit']" data-testid="edit-idea">
+      Edit
+    </cai-button>
+
+    @if (!isClosed()) {
+      <cai-button variant="secondary" [disabled]="busy()" (click)="closeNow()" data-testid="close-idea">
+        Close now
+      </cai-button>
+    }
+
+    <cai-button variant="danger" [disabled]="busy()" (click)="remove()" data-testid="delete-idea">
+      Delete
+    </cai-button>
+  </div>
+
+  <div class="panels">
+    <section class="panel" aria-labelledby="results-heading">
+      <div class="panel__head">
+        <h2 class="panel__title" id="results-heading">Results</h2>
+        <cai-live-indicator [state]="realtimeState()" />
+      </div>
+
+      @if (results(); as tally) {
+        <cai-vote-tally [results]="tally" />
+
+        <dl class="turnout" data-testid="detail-turnout">
+          <dt class="turnout__label">Turnout</dt>
+          <dd class="turnout__value">
+            {{ tally.totalVotes }} of {{ tally.invitedCount }} invited
+          </dd>
+        </dl>
+      }
+    </section>
+
+    <section class="panel" aria-labelledby="links-heading">
+      <div class="panel__head">
+        <h2 class="panel__title" id="links-heading">Voting links</h2>
+        <cai-button [disabled]="busy()" (click)="generateLinks()" data-testid="generate-links">
+          Generate for all leads
+        </cai-button>
+      </div>
+
+      <cai-voting-link-list
+        [links]="links()"
+        [freshLinks]="freshLinks()"
+        (regenerated)="regenerate($event)"
+        (revoked)="revoke($event)"
+      />
+    </section>
+
+    <section class="panel" aria-labelledby="comments-heading">
+      <h2 class="panel__title" id="comments-heading">Comments</h2>
+
+      <cai-comment-list [comments]="comments()" />
+
+      <div class="panel__form">
+        <cai-comment-form
+          #commentForm
+          [pending]="commentPending()"
+          [error]="commentError()"
+          (submitted)="addComment($event, commentForm)"
+        />
+      </div>
+    </section>
+  </div>
+}

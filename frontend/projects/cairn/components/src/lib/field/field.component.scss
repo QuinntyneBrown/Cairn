@@ -1,0 +1,56 @@
+/* The projected control is styled from here via ::ng-deep-free descendant
+   selectors — the control is light DOM (ng-content), so plain descendant
+   selectors reach it under emulated encapsulation. */
+
+.field {
+  display: grid;
+  gap: var(--s2);
+}
+
+.field__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.field__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+.field__control input,
+.field__control textarea,
+.field__control select {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--s3) var(--s4);
+  background: var(--surface-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font: inherit;
+}
+
+.field__control textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.field__control input::placeholder,
+.field__control textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.field--invalid .field__control input,
+.field--invalid .field__control textarea,
+.field--invalid .field__control select {
+  border-color: var(--negative);
+}
+
+.field__error {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--negative);
+}

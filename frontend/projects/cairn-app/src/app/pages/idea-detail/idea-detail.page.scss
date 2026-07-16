@@ -1,0 +1,118 @@
+/* Mobile-first: one column of panels. At 80rem the results and links sit side by
+   side with comments beneath, because on a laptop the tally and the turnout it is
+   drawn from should be readable together. */
+
+:host {
+  display: block;
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  padding: var(--s8) 0;
+}
+
+.crumb {
+  margin-bottom: var(--s4);
+  font-size: 0.85rem;
+}
+
+.crumb a {
+  color: var(--text-muted);
+}
+
+.crumb a:hover {
+  color: var(--text);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin: var(--s5) 0;
+}
+
+.panels {
+  display: grid;
+  gap: var(--s4);
+}
+
+.panel {
+  padding: var(--s5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  margin-bottom: var(--s4);
+}
+
+.panel__title {
+  margin: 0 0 var(--s4);
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.panel__head .panel__title {
+  margin: 0;
+}
+
+.panel__form {
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.turnout {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  margin: var(--s5) 0 0;
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.turnout__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.turnout__value {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+cai-idea-statement {
+  display: block;
+  margin-bottom: var(--s5);
+}
+
+@media (min-width: 48rem) {
+  .panel {
+    padding: var(--s6);
+  }
+}
+
+@media (min-width: 80rem) {
+  .panels {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Comments run the full width — they are prose, and prose in a half column next
+     to a bar chart is a column of two-word lines. */
+  .panel:last-child {
+    grid-column: 1 / -1;
+  }
+}

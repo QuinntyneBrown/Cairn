@@ -1,0 +1,31 @@
+<fieldset class="yn" [disabled]="disabled()">
+  <legend class="sr-only">Your answer</legend>
+
+  <div class="yn__grid">
+    <label class="yn__choice yn__choice--yes" [class.yn__choice--on]="value() === true">
+      <input
+        class="sr-only"
+        type="radio"
+        [name]="group"
+        [checked]="value() === true"
+        [disabled]="disabled()"
+        (change)="choose(true)"
+        data-testid="answer-yes"
+      />
+      <span class="yn__label">Yes</span>
+    </label>
+
+    <label class="yn__choice yn__choice--no" [class.yn__choice--on]="value() === false">
+      <input
+        class="sr-only"
+        type="radio"
+        [name]="group"
+        [checked]="value() === false"
+        [disabled]="disabled()"
+        (change)="choose(false)"
+        data-testid="answer-no"
+      />
+      <span class="yn__label">No</span>
+    </label>
+  </div>
+</fieldset>

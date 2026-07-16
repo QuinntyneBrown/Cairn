@@ -1,0 +1,156 @@
+/* The ballot is the one screen a stranger sees. It carries no app chrome — no
+   nav, no sign-out — because there is no account behind it.
+
+   Flat throughout: no shadow, no gradient. Elevation here is a 1px line and a
+   change of fill, nothing else. */
+
+.ballot {
+  min-height: 100vh;
+  padding: var(--s5) var(--s4);
+  /* background-COLOR, not the `background` shorthand: the shorthand resets
+     background-image and would silently wipe the .dot-grid painted by the
+     utility class on this same element. */
+  background-color: var(--surface-sunk);
+}
+
+/* The one screen a stranger sees should say whose it is — especially when the
+   link is dead and there is no idea to show. Without this a spent link is an
+   error box on an empty field, which is how a phishing page looks too. */
+.ballot__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.ballot__mark {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  background: var(--accent);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+}
+
+.ballot__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.ballot__inner {
+  width: 100%;
+  /* One column, a comfortable read wide. On a phone this is simply the screen;
+     on a laptop it stops the question sprawling into a paragraph. */
+  max-width: var(--measure);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--s5);
+  align-content: start;
+}
+
+.ballot__loading {
+  justify-self: center;
+  padding: var(--s8) 0;
+}
+
+.ballot__answer,
+.ballot__comments {
+  display: grid;
+  gap: var(--s3);
+}
+
+.ballot__comments {
+  gap: var(--s4);
+  padding-top: var(--s5);
+  border-top: 1px solid var(--line);
+}
+
+/* Sticky on a phone so the answer is always one thumb away — a voter who has
+   chosen should never have to hunt for the way to say so. It sits in the flow on
+   larger screens, where the whole page is visible at once anyway. */
+.ballot__submit {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin: 0 calc(var(--s4) * -1);
+  padding: var(--s3) var(--s4);
+  /* The safe-area inset keeps the button clear of the home indicator on a
+     notched phone, where the bottom of the viewport is not the bottom of the
+     usable screen. */
+  padding-bottom: calc(var(--s3) + env(safe-area-inset-bottom));
+  background: var(--surface-sunk);
+  border-top: 1px solid var(--line);
+}
+
+/* --- Comments ----------------------------------------------------------- */
+
+.comments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s3);
+}
+
+.comments__item {
+  padding: var(--s4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.comments__author {
+  margin: 0 0 var(--s1);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.comments__body {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.comment-form {
+  display: grid;
+  gap: var(--s3);
+  justify-items: start;
+}
+
+.comment-form__input {
+  width: 100%;
+  padding: var(--s3) var(--s4);
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  resize: vertical;
+}
+
+.comment-form__input::placeholder {
+  color: var(--text-faint);
+}
+
+.comment-form__input:disabled {
+  opacity: 0.6;
+}
+
+@media (min-width: 48rem) {
+  .ballot {
+    padding: var(--s8) var(--s6);
+  }
+
+  .ballot__submit {
+    position: static;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border-top: 0;
+    justify-self: start;
+    min-width: 16rem;
+  }
+}

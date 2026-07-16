@@ -1,0 +1,11 @@
+<div class="statement">
+  @if (eyebrow(); as label) {
+    <p class="statement__eyebrow">{{ label }}</p>
+  }
+
+  <h1 class="statement__title" data-testid="ballot-title">{{ title() }}</h1>
+
+  @if (description(); as body) {
+    <p class="statement__body">{{ body }}</p>
+  }
+</div>

@@ -1,0 +1,12 @@
+<span
+  class="live"
+  [class.live--on]="state() === 'live'"
+  [class.live--waiting]="state() === 'connecting' || state() === 'reconnecting'"
+  [attr.data-state]="state()"
+  data-testid="live-indicator"
+  role="status"
+>
+  <span class="live__dot" aria-hidden="true"></span>
+  <span class="live__label">{{ label() }}</span>
+  <span class="sr-only">{{ description() }}</span>
+</span>

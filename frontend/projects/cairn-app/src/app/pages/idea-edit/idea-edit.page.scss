@@ -1,0 +1,37 @@
+/* The form is a single column at every width. A two-column form would let someone
+   miss the response-type picker, which is the one irreversible choice here. */
+
+:host {
+  display: block;
+}
+
+.head {
+  margin-bottom: var(--s5);
+}
+
+.head__title {
+  margin: var(--s1) 0 var(--s2);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  padding: var(--s8) 0;
+}
+
+.form-wrap {
+  margin-top: var(--s5);
+  padding: var(--s5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  max-width: 44rem;
+}
+
+@media (min-width: 48rem) {
+  .form-wrap {
+    padding: var(--s6);
+  }
+}

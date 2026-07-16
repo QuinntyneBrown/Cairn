@@ -1,0 +1,11 @@
+<div class="notice" [class]="'notice--' + kind()" [attr.role]="role()">
+  <span class="notice__bar" aria-hidden="true"></span>
+  <div class="notice__body">
+    @if (title(); as titleText) {
+      <p class="notice__title">{{ titleText }}</p>
+    }
+    <div class="notice__text">
+      <ng-content />
+    </div>
+  </div>
+</div>

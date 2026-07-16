@@ -1,0 +1,26 @@
+<fieldset class="scale" [disabled]="disabled()">
+  <legend class="sr-only">Rate from {{ min }} to {{ max }}</legend>
+
+  <div class="scale__grid">
+    @for (point of points; track point) {
+      <label class="scale__cell" [class.scale__cell--on]="value() === point">
+        <input
+          class="sr-only"
+          type="radio"
+          [name]="group"
+          [checked]="value() === point"
+          [disabled]="disabled()"
+          (change)="choose(point)"
+          [attr.data-testid]="'answer-scale-' + point"
+        />
+        <span class="scale__number" aria-hidden="true">{{ point }}</span>
+        <span class="sr-only">{{ point }} out of {{ max }}</span>
+      </label>
+    }
+  </div>
+
+  <div class="scale__ends" aria-hidden="true">
+    <span>Not at all</span>
+    <span>Completely</span>
+  </div>
+</fieldset>

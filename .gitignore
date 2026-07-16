@@ -1,0 +1,40 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+dist/
+node_modules/
+
+# Generated decks — `cairn deck build` writes these into the working directory
+*.pptx
+
+# User-specific and IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Local secrets. The JWT signing key must never be committed: appsettings.json ships it
+# empty on purpose and the API refuses to start without one, so production has to supply
+# its own via environment or user-secrets.
+appsettings.Local.json
+*.local.json
+secrets.json
+
+# Test and coverage artifacts
+[Tt]est[Rr]esult*/
+**/test-results/
+coverage/
+*.trx
+
+# Playwright
+/frontend/playwright-report/
+/frontend/test-results/
+/frontend/blob-report/
+/frontend/.playwright/
+
+# OS
+Thumbs.db
+.DS_Store

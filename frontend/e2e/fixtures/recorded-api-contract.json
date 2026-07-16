@@ -1,0 +1,404 @@
+{
+  "POST /api/auth/sign-in -> 200": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZThhYTcyYS0xOWViLTQ4NjItYTMyMi0yZDA1NjVmYWNkMWQiLCJlbWFpbCI6ImFkbWluQGZhaXRodGVjaC50byIsImp0aSI6IjBlYzgzNmU2LTE5ZDEtNGI2NS05YmJkLWQyMjkxMDhmYzk2YyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwic2NvcGUiOiJ1c2VyIiwibmJmIjoxNzg0MjI3MjYzLCJleHAiOjE3ODQyMjkwNjMsImlzcyI6ImNhaXJuIiwiYXVkIjoiY2Fpcm4ifQ.nch_MsnAgRftP-qR4M-dMqvK1ZsGbODGJ3o3MI7afZM",
+    "refreshToken": "4JMAUTnu7irpmvseRilOMltN6mJXGwKVKJ1pmuvXEmo",
+    "userId": "6e8aa72a-19eb-4862-a322-2d0565facd1d",
+    "email": "admin@faithtech.to",
+    "displayName": "Toronto Organiser",
+    "role": "Admin"
+  },
+  "GET /api/me -> 200": {
+    "id": "6e8aa72a-19eb-4862-a322-2d0565facd1d",
+    "email": "admin@faithtech.to",
+    "displayName": "Toronto Organiser",
+    "role": "Admin"
+  },
+  "GET /api/ideas -> 200 (IdeaSummary[])": [
+    {
+      "id": "06a38c43-4180-4f71-882c-2200c996b74a",
+      "title": "Open a call for a second Toronto organiser?",
+      "responseType": "YesNo",
+      "status": "Draft",
+      "opensAt": "2026-07-21T18:23:24.384865+00:00",
+      "closesAt": "2026-07-31T18:23:24.384865+00:00",
+      "voteCount": 0,
+      "invitedCount": 0
+    },
+    {
+      "id": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "title": "Which cause should the next hackathon serve?",
+      "responseType": "Options",
+      "status": "Open",
+      "opensAt": "2026-07-14T18:23:24.384865+00:00",
+      "closesAt": "2026-07-23T14:37:10.7164075-04:00",
+      "voteCount": 7,
+      "invitedCount": 9
+    }
+  ],
+  "GET /api/ideas/{id} -> 200 (IdeaDto)": {
+    "id": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+    "title": "Which cause should the next hackathon serve?",
+    "description": "We have capacity for one focused hackathon this year. Picking the cause early lets us line up a partner organisation and understand what they actually need.",
+    "responseType": "Options",
+    "status": "Open",
+    "opensAt": "2026-07-14T18:23:24.384865+00:00",
+    "closesAt": "2026-07-23T14:37:10.7164075-04:00",
+    "options": [
+      {
+        "id": "b7b3adbb-131a-4a21-81ef-dd3d1fd987bb",
+        "label": "Newcomer settlement services",
+        "sortOrder": 0
+      },
+      {
+        "id": "4adeece9-c48f-49b4-96f3-7239f51e9314",
+        "label": "Food bank logistics",
+        "sortOrder": 1
+      },
+      {
+        "id": "016c3fa1-4a3c-4404-ada9-5153e54928b5",
+        "label": "Church accessibility tooling",
+        "sortOrder": 2
+      },
+      {
+        "id": "3e023281-5233-47e8-9a5f-779466f98ddb",
+        "label": "Youth mentorship matching",
+        "sortOrder": 3
+      }
+    ]
+  },
+  "GET /api/ideas/{id}/results -> 200 (Options)": {
+    "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+    "title": "Which cause should the next hackathon serve?",
+    "responseType": "Options",
+    "status": "Open",
+    "closesAt": "2026-07-23T14:37:10.7164075-04:00",
+    "totalVotes": 7,
+    "invitedCount": 9,
+    "yesCount": null,
+    "noCount": null,
+    "options": [
+      {
+        "optionId": "b7b3adbb-131a-4a21-81ef-dd3d1fd987bb",
+        "label": "Newcomer settlement services",
+        "count": 1
+      },
+      {
+        "optionId": "4adeece9-c48f-49b4-96f3-7239f51e9314",
+        "label": "Food bank logistics",
+        "count": 2
+      },
+      {
+        "optionId": "016c3fa1-4a3c-4404-ada9-5153e54928b5",
+        "label": "Church accessibility tooling",
+        "count": 3
+      },
+      {
+        "optionId": "3e023281-5233-47e8-9a5f-779466f98ddb",
+        "label": "Youth mentorship matching",
+        "count": 1
+      }
+    ],
+    "scale": null
+  },
+  "GET /api/ideas/{id}/results -> 200 (Scale)": {
+    "ideaId": "7f6b5d98-2b45-4291-bdaa-d27e1d96da1f",
+    "title": "How ready are we to host a regional gathering?",
+    "responseType": "Scale",
+    "status": "Open",
+    "closesAt": "2026-07-18T18:23:24.384865+00:00",
+    "totalVotes": 6,
+    "invitedCount": 9,
+    "yesCount": null,
+    "noCount": null,
+    "options": null,
+    "scale": {
+      "average": 7,
+      "distribution": [
+        {
+          "value": 1,
+          "count": 0
+        },
+        {
+          "value": 2,
+          "count": 0
+        },
+        {
+          "value": 3,
+          "count": 0
+        },
+        {
+          "value": 4,
+          "count": 0
+        },
+        {
+          "value": 5,
+          "count": 2
+        },
+        {
+          "value": 6,
+          "count": 0
+        },
+        {
+          "value": 7,
+          "count": 2
+        },
+        {
+          "value": 8,
+          "count": 0
+        },
+        {
+          "value": 9,
+          "count": 2
+        },
+        {
+          "value": 10,
+          "count": 0
+        }
+      ]
+    }
+  },
+  "GET /api/ideas/{id}/results -> 200 (YesNo)": {
+    "ideaId": "1045847b-3a40-4afa-abe5-52413e12a1fc",
+    "title": "Run a Build Night in September",
+    "responseType": "YesNo",
+    "status": "Open",
+    "closesAt": "2026-07-20T18:23:24.384865+00:00",
+    "totalVotes": 6,
+    "invitedCount": 8,
+    "yesCount": 5,
+    "noCount": 1,
+    "options": null,
+    "scale": null
+  },
+  "GET /api/ideas/{id}/comments -> 200": [
+    {
+      "id": "bf3f02d8-29cf-4be1-a79d-5b0b1e3126f5",
+      "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "authorId": "bad51414-30b9-4faa-8d5a-6db02b6e0dca",
+      "authorName": "Ada Osei",
+      "body": "Strongly in favour, but only if we can lock a venue before we announce anything.",
+      "createdAt": "2026-07-14T19:23:24.384865+00:00"
+    },
+    {
+      "id": "5faafa63-0965-4271-a461-0ae1358269d8",
+      "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "authorId": "e5491931-f728-4e31-bacc-1c1d96a5e8df",
+      "authorName": "Grace Lim",
+      "body": "I can facilitate. I would want the project scoped much tighter than last time.",
+      "createdAt": "2026-07-14T20:23:24.384865+00:00"
+    }
+  ],
+  "GET /api/leads -> 200": [
+    {
+      "id": "bad51414-30b9-4faa-8d5a-6db02b6e0dca",
+      "email": "ada@faithtech.to",
+      "displayName": "Ada Osei",
+      "role": "Lead",
+      "canSignIn": false
+    },
+    {
+      "id": "acf5b6fc-c63e-4eab-9dd3-9a0be8765eb7",
+      "email": "alan@faithtech.to",
+      "displayName": "Alan Mwangi",
+      "role": "Lead",
+      "canSignIn": false
+    },
+    {
+      "id": "de88453a-b813-4af3-8a8b-2b115cfa4fec",
+      "email": "barbara@faithtech.to",
+      "displayName": "Barbara Nkemelu",
+      "role": "Lead",
+      "canSignIn": false
+    }
+  ],
+  "POST /api/ideas/{id}/vote-links -> 200 (url present ONLY here)": [
+    {
+      "id": "e22a894e-21d6-4e15-a2dd-e52842530632",
+      "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "userId": "ff2f426d-5edc-4e28-a755-134280cf613e",
+      "displayName": "Katherine Reyes",
+      "email": "katherine@faithtech.to",
+      "expiresAt": "2026-07-23T14:37:10.7164075-04:00",
+      "createdAt": "2026-07-13T18:23:24.384865+00:00",
+      "isRevoked": false,
+      "hasVoted": false,
+      "url": "http://localhost:4205/vote/AF1l1mSshwT4Im8NFTPG9SvA_FNG5gvjyuAi9wp2XpA"
+    },
+    {
+      "id": "733b6e0b-8635-4a95-bc13-da4c8d29bdc9",
+      "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "userId": "e5491931-f728-4e31-bacc-1c1d96a5e8df",
+      "displayName": "Grace Lim",
+      "email": "grace@faithtech.to",
+      "expiresAt": "2026-07-23T14:37:10.7164075-04:00",
+      "createdAt": "2026-07-13T18:23:24.384865+00:00",
+      "isRevoked": false,
+      "hasVoted": false,
+      "url": "http://localhost:4205/vote/XehG9K6ecVDtmE53ZBEtadHRgQGZfMlo0cWKwNGi74g"
+    }
+  ],
+  "GET /api/ideas/{id}/vote-links -> 200 (url is ALWAYS null)": [
+    {
+      "id": "6a56cd08-c80d-40c8-a70b-3117f449d87f",
+      "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "userId": "bad51414-30b9-4faa-8d5a-6db02b6e0dca",
+      "displayName": "Ada Osei",
+      "email": "ada@faithtech.to",
+      "expiresAt": "2026-07-23T14:37:10.7164075-04:00",
+      "createdAt": "2026-07-13T18:23:24.384865+00:00",
+      "isRevoked": false,
+      "hasVoted": true,
+      "url": null
+    },
+    {
+      "id": "07591fda-0f28-4594-9267-35094e9b5d76",
+      "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "userId": "acf5b6fc-c63e-4eab-9dd3-9a0be8765eb7",
+      "displayName": "Alan Mwangi",
+      "email": "alan@faithtech.to",
+      "expiresAt": "2026-07-23T14:37:10.7164075-04:00",
+      "createdAt": "2026-07-13T18:23:24.384865+00:00",
+      "isRevoked": false,
+      "hasVoted": true,
+      "url": null
+    }
+  ],
+  "POST /api/vote-sessions -> 200 (VoteSessionDto)": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmZjJmNDI2ZC01ZWRjLTRlMjgtYTc1NS0xMzQyODBjZjYxM2UiLCJqdGkiOiJkMWM5M2YwZi1iYzQ4LTRjNzctYTZlYy03NWM3M2RiYTAxMzAiLCJzY29wZSI6InZvdGUiLCJpZGVhX2lkIjoiNDUxNzFmMGYtZDIyNi00NzllLWJkMmItZjY1MjBjNzRmYmYwIiwibmJmIjoxNzg0MjI3MjY0LCJleHAiOjE3ODQyMzA4NjQsImlzcyI6ImNhaXJuIiwiYXVkIjoiY2Fpcm4ifQ.stkwXA-S3k51goklJJHTF99LrE2e3aucbT60ELu1KbE",
+    "expiresAt": "2026-07-16T19:41:04.2395408+00:00",
+    "leadName": "Katherine Reyes",
+    "idea": {
+      "id": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "title": "Which cause should the next hackathon serve?",
+      "description": "We have capacity for one focused hackathon this year. Picking the cause early lets us line up a partner organisation and understand what they actually need.",
+      "responseType": "Options",
+      "status": "Open",
+      "opensAt": "2026-07-14T18:23:24.384865+00:00",
+      "closesAt": "2026-07-23T14:37:10.7164075-04:00",
+      "options": [
+        {
+          "id": "b7b3adbb-131a-4a21-81ef-dd3d1fd987bb",
+          "label": "Newcomer settlement services",
+          "sortOrder": 0
+        },
+        {
+          "id": "4adeece9-c48f-49b4-96f3-7239f51e9314",
+          "label": "Food bank logistics",
+          "sortOrder": 1
+        },
+        {
+          "id": "016c3fa1-4a3c-4404-ada9-5153e54928b5",
+          "label": "Church accessibility tooling",
+          "sortOrder": 2
+        },
+        {
+          "id": "3e023281-5233-47e8-9a5f-779466f98ddb",
+          "label": "Youth mentorship matching",
+          "sortOrder": 3
+        }
+      ]
+    },
+    "myVote": {
+      "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+      "responseType": "Options",
+      "yesNo": null,
+      "selectedOptionId": "4adeece9-c48f-49b4-96f3-7239f51e9314",
+      "scale": null,
+      "updatedAt": "2026-07-16T18:23:24.384865+00:00"
+    }
+  },
+  "POST /api/vote-sessions -> 410 (unknown/expired/revoked are IDENTICAL)": {
+    "title": "Link unavailable",
+    "status": 410,
+    "detail": "This voting link is no longer available."
+  },
+  "PUT /api/ideas/{id}/votes -> 200 (VoteDto)": {
+    "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+    "responseType": "Options",
+    "yesNo": null,
+    "selectedOptionId": "b7b3adbb-131a-4a21-81ef-dd3d1fd987bb",
+    "scale": null,
+    "updatedAt": "2026-07-16T18:41:04.2941937+00:00"
+  },
+  "GET /api/ideas/{id}/votes/me -> 200": {
+    "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+    "responseType": "Options",
+    "yesNo": null,
+    "selectedOptionId": "b7b3adbb-131a-4a21-81ef-dd3d1fd987bb",
+    "scale": null,
+    "updatedAt": "2026-07-16T18:41:04.2941937+00:00"
+  },
+  "PUT /api/ideas/{id}/votes -> 400 (answer shape wrong for this idea)": {
+    "title": "One or more validation errors occurred.",
+    "status": 400,
+    "errors": {
+      "Answer": [
+        "This idea expects one of its options to be selected."
+      ]
+    }
+  },
+  "PUT a DIFFERENT idea with this link -> 403": {
+    "title": "Forbidden",
+    "status": 403,
+    "detail": "This voting link is not for that idea."
+  },
+  "GET /api/me with a vote-link token -> 403 (a link is NOT a session)": "",
+  "POST /api/ideas/{id}/comments -> 200": {
+    "id": "47f07910-ad07-48e3-abf1-8dee3d9dc2fa",
+    "ideaId": "45171f0f-d226-479e-bd2b-f6520c74fbf0",
+    "authorId": "ff2f426d-5edc-4e28-a755-134280cf613e",
+    "authorName": "Katherine Reyes",
+    "body": "Recorded from the real API.",
+    "createdAt": "2026-07-16T18:41:04.3749573+00:00"
+  },
+  "POST /api/auth/sign-in -> request (SignInRequest)": {
+    "email": "admin@faithtech.to",
+    "password": "correct-horse-battery"
+  },
+  "POST /api/auth/register -> request (RegisterRequest)": {
+    "email": "lead@faithtech.to",
+    "displayName": "A Lead",
+    "password": "correct-horse-battery"
+  },
+  "POST /api/auth/refresh -> request (RefreshRequest)": {
+    "refreshToken": "a-raw-refresh-token"
+  },
+  "POST /api/ideas -> request (CreateIdeaRequest)": {
+    "title": "Run a Build Night in September",
+    "description": "Does this seem like a good idea?",
+    "responseType": "Options",
+    "opensAt": "2026-07-16T12:00:00+00:00",
+    "closesAt": "2026-07-23T12:00:00+00:00",
+    "options": [
+      "First choice",
+      "Second choice"
+    ]
+  },
+  "PUT /api/ideas/{id} -> request (UpdateIdeaRequest)": {
+    "title": "Run a Build Night in September",
+    "description": "Does this seem like a good idea?",
+    "responseType": "Options",
+    "opensAt": "2026-07-16T12:00:00+00:00",
+    "closesAt": "2026-07-23T12:00:00+00:00",
+    "options": [
+      "First choice",
+      "Second choice"
+    ]
+  },
+  "PUT /api/ideas/{id}/votes -> request (CastVoteRequest)": {
+    "yesNo": null,
+    "selectedOptionId": "00000000-0000-0000-0000-000000000000",
+    "scale": null
+  },
+  "POST /api/ideas/{id}/comments -> request (AddCommentRequest)": {
+    "body": "A comment from a lead."
+  },
+  "POST /api/vote-sessions -> request (RedeemVoteLinkRequest)": {
+    "token": "a-raw-magic-link-token"
+  },
+  "POST /api/ideas/{id}/vote-links -> request (CreateVoteLinksRequest)": {
+    "userIds": [
+      "00000000-0000-0000-0000-000000000000"
+    ]
+  }
+}

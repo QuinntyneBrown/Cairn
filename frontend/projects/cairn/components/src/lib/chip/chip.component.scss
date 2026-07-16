@@ -1,0 +1,41 @@
+/* Every tone is a saturated flat fill with dark text. Do not be tempted to put
+   white on --positive: it lands near 3.0:1 and fails AA. See _tokens.scss. */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: 0.35em 0.75em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  border-radius: var(--radius-pill);
+  color: var(--text-on-fill);
+}
+
+.chip--neutral {
+  background: var(--ft-grey-200);
+}
+
+.chip--positive {
+  background: var(--positive);
+}
+
+.chip--negative {
+  background: var(--negative);
+}
+
+.chip--info {
+  background: var(--info);
+}
+
+.chip--warn {
+  background: var(--warn);
+}
+
+.chip--accent {
+  background: var(--accent);
+}

@@ -1,0 +1,70 @@
+/* Flat by rule: no shadow, no gradient, no lift on hover. Hover is a colour
+   change and nothing else. Every fill takes --text-on-fill (dark) — see the
+   contrast rule in _tokens.scss. */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: var(--tap-min);
+  padding: var(--s3) var(--s5);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--text-on-fill);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--warn);
+}
+
+.btn--secondary {
+  background: var(--surface-inverse);
+  color: var(--text-on-inverse);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: var(--text-muted);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  border-color: var(--line-strong);
+}
+
+.btn--danger {
+  background: var(--negative);
+  color: var(--text-on-fill);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: var(--warn);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  background: var(--ft-grey-300);
+  color: var(--text-faint);
+  border-color: transparent;
+}

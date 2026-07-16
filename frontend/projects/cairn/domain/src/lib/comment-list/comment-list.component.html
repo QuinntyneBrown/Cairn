@@ -1,0 +1,17 @@
+@if (comments().length === 0) {
+  <p class="empty" data-testid="comments-empty">No comments yet.</p>
+} @else {
+  <ol class="comments" data-testid="comment-list">
+    @for (comment of comments(); track comment.id) {
+      <li class="comment" [attr.data-testid]="'comment-' + comment.id">
+        <div class="comment__head">
+          <span class="comment__author">{{ comment.authorName }}</span>
+          <time class="comment__when" [attr.datetime]="comment.createdAt">
+            {{ comment.createdAt | date: 'd MMM, HH:mm' }}
+          </time>
+        </div>
+        <p class="comment__body">{{ comment.body }}</p>
+      </li>
+    }
+  </ol>
+}

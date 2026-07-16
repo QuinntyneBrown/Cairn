@@ -1,0 +1,26 @@
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="bar">
+  <div class="bar__inner wrap">
+    <a class="brand" routerLink="/ideas">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__name">Cairn</span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <a class="nav__link" routerLink="/ideas" routerLinkActive="nav__link--active">Ideas</a>
+      <a class="nav__link" routerLink="/leads" routerLinkActive="nav__link--active">Leads</a>
+    </nav>
+
+    <div class="bar__end">
+      @if (user(); as currentUser) {
+        <span class="bar__who">{{ currentUser.displayName }}</span>
+      }
+      <button class="bar__out" type="button" (click)="signOut()">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <router-outlet />
+</main>

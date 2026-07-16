@@ -1,0 +1,77 @@
+<main class="ds wrap" data-testid="design-system-page">
+  <p class="eyebrow">Throwaway — theme verification</p>
+  <h1 class="ds__h1">Cairn design system</h1>
+  <p class="lede measure">
+    The type scale and every fill in the palette. This page exists to make the contrast rule
+    checkable by eye. It is not a product page.
+  </p>
+
+  <hr />
+
+  <!-- Type scale -->
+  <section class="ds__section">
+    <h2 class="ds__section-title">Type scale</h2>
+
+    <div class="ds__type">
+      <h1>Heading 1 — a cairn marks a decision</h1>
+      <h2>Heading 2 — put it to the people it affects</h2>
+      <h3>Heading 3 — and count what comes back</h3>
+      <h4>Heading 4 — the smallest display size</h4>
+      <p class="lede measure">
+        Lede. Slightly larger, muted, for the sentence under a heading that says what the page is
+        for.
+      </p>
+      <p class="measure">
+        Body. The default paragraph, set in Inter at 16px with a 1.55 line height and capped at
+        <code>--measure</code> so a long line never outruns the eye on a wide screen.
+      </p>
+      <p class="eyebrow">Eyebrow — the label above a heading</p>
+      <p class="accent-text">Accent — Avril falling through to Newsreader italic.</p>
+      <p class="muted">Muted text — secondary information.</p>
+      <p class="faint">Faint text — hints and timestamps.</p>
+      <p><small>Small — the fine print.</small></p>
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- The contrast gate -->
+  <section class="ds__section">
+    <h2 class="ds__section-title">Every fill, with --text-on-fill</h2>
+    <p class="measure">
+      Each swatch below is a large flat fill with <code>--text-on-fill</code> (#16160C) on it. The
+      first ratio is what ships. The second is what we would have had with white text instead —
+      shown so the rule is falsifiable rather than folklore.
+    </p>
+
+    <ul class="ds__fills" role="list">
+      @for (fill of fills; track fill.token) {
+        <li class="ds__fill" [class]="'ds__fill--' + fill.clazz">
+          <p class="ds__fill-token">{{ fill.token }}</p>
+          <p class="ds__fill-hex">{{ fill.hex }}</p>
+          <p class="ds__fill-ratio">
+            on --text-on-fill <b>{{ fill.onDark }}</b> — passes AA
+          </p>
+          <p class="ds__fill-ratio ds__fill-ratio--bad">white would be {{ fill.onWhite }}</p>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <hr />
+
+  <!-- The counter-example -->
+  <section class="ds__section">
+    <h2 class="ds__section-title">Why the rule exists</h2>
+    <p class="measure">
+      Toronto yellow as text on white is <b>1.13:1</b>. It is below, rendered at the size a heading
+      would use. If you can read it, the monitor is lying.
+    </p>
+    <p class="ds__wrong">This is #FFF737 text on white — 1.13:1</p>
+    <p class="measure faint">
+      Same trap, less obvious: white on --positive is 3.23:1 and fails AA for body text. Hence one
+      dark text colour on every fill, without exception.
+    </p>
+    <p class="ds__wrong-green">White on --positive — 3.23:1</p>
+  </section>
+</main>

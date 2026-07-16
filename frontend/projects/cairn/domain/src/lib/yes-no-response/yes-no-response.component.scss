@@ -1,0 +1,81 @@
+/* The fill IS the feedback. No checkmark, no shadow, no border thickening —
+   the block simply becomes the colour of the answer. */
+
+.yn {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0; /* fieldset defaults to min-content; this lets the grid shrink */
+}
+
+.yn__grid {
+  display: grid;
+  gap: var(--s3);
+}
+
+.yn__choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-min);
+  padding: var(--s4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  /* Only the fill and the border animate. Nothing moves — a control that shifts
+     under a thumb on a moving train is a control you mis-tap. */
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.yn__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+/* Focus lands on the hidden input, so the ring has to be drawn by the label. */
+.yn__choice:has(:focus-visible) {
+  outline: 3px solid var(--line-strong);
+  outline-offset: 2px;
+}
+
+.yn__choice--on {
+  border-color: transparent;
+  /* Dark text on a saturated fill, always — see the contrast rule in _tokens. */
+  color: var(--text-on-fill);
+}
+
+.yn__choice--yes.yn__choice--on {
+  background: var(--positive);
+}
+
+.yn__choice--no.yn__choice--on {
+  background: var(--negative);
+}
+
+.yn:disabled .yn__choice {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* Hover is a pointer affordance; a touch device has no hover and must not get a
+   sticky one. */
+@media (hover: hover) {
+  .yn__choice:not(.yn__choice--on):hover {
+    border-color: var(--line-strong);
+  }
+
+  .yn:disabled .yn__choice:hover {
+    border-color: var(--line);
+  }
+}
+
+@media (min-width: 48rem) {
+  .yn__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

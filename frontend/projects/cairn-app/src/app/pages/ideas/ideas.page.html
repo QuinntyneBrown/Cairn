@@ -1,0 +1,55 @@
+<header class="head">
+  <div>
+    <p class="eyebrow">Decisions</p>
+    <h1 class="head__title">Ideas</h1>
+  </div>
+
+  <cai-button routerLink="/ideas/new" data-testid="new-idea">New idea</cai-button>
+</header>
+
+<nav class="filters" aria-label="Filter by status">
+  @for (filter of filters; track filter.label) {
+    <button
+      class="filter"
+      type="button"
+      [class.filter--on]="active() === filter.value"
+      [attr.aria-pressed]="active() === filter.value"
+      (click)="select(filter.value)"
+      [attr.data-testid]="'filter-' + filter.label"
+    >
+      {{ filter.label }}
+    </button>
+  }
+</nav>
+
+@if (loading()) {
+  <div class="state" data-testid="ideas-loading">
+    <cai-spinner label="Loading ideas" />
+  </div>
+} @else if (failed()) {
+  <cai-notice kind="error" title="We could not load the ideas" data-testid="ideas-error">
+    Something went wrong reaching the server. Try again.
+  </cai-notice>
+} @else if (rows().length === 0) {
+  <cai-empty-state
+    [title]="active() ? 'Nothing here' : 'No ideas yet'"
+    [message]="
+      active()
+        ? 'No idea is in this state right now.'
+        : 'An idea is a question put to your leads. Start with the decision you are actually stuck on.'
+    "
+    data-testid="ideas-empty"
+  >
+    @if (!active()) {
+      <cai-button routerLink="/ideas/new">New idea</cai-button>
+    }
+  </cai-empty-state>
+} @else {
+  <ul class="list" data-testid="ideas-list">
+    @for (idea of rows(); track idea.id) {
+      <li>
+        <cai-idea-card [idea]="idea" />
+      </li>
+    }
+  </ul>
+}

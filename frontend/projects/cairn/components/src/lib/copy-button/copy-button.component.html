@@ -1,0 +1,9 @@
+<button class="copy" type="button" [class.copy--done]="copied()" (click)="copy()">
+  {{ copied() ? copiedLabel() : label() }}
+</button>
+
+<span class="sr-only" role="status">
+  @if (copied()) {
+    {{ copiedLabel() }}
+  }
+</span>

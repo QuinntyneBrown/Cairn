@@ -1,0 +1,118 @@
+.ds {
+  padding-top: var(--s6);
+  padding-bottom: var(--s9);
+  background: var(--surface);
+  min-height: 100vh;
+}
+
+.ds__h1 {
+  margin-bottom: var(--s3);
+}
+
+.ds__section {
+  margin-bottom: var(--s6);
+}
+
+.ds__section-title {
+  margin-bottom: var(--s4);
+}
+
+.ds__type > * {
+  margin-bottom: var(--s4);
+}
+
+/* --- The fill grid: one column on a phone, widening at the breakpoints
+       documented in styles/_tokens.scss. --- */
+.ds__fills {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s4);
+  margin-top: var(--s5);
+}
+
+.ds__fill {
+  padding: var(--s5);
+  border-radius: var(--radius-lg);
+  /* The point of the swatch: dark text on a saturated fill. */
+  color: var(--text-on-fill);
+}
+
+.ds__fill--accent {
+  background: var(--accent);
+}
+
+.ds__fill--positive {
+  background: var(--positive);
+}
+
+.ds__fill--negative {
+  background: var(--negative);
+}
+
+.ds__fill--warn {
+  background: var(--warn);
+}
+
+.ds__fill--info {
+  background: var(--info);
+}
+
+.ds__fill--grey {
+  background: var(--ft-grey-200);
+}
+
+.ds__fill-token {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.ds__fill-hex {
+  margin: 0 0 var(--s3);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.ds__fill-ratio {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.ds__fill-ratio--bad {
+  opacity: 0.75;
+  text-decoration: line-through;
+}
+
+/* --- Deliberately illegible. These two are the counter-example and must never
+       be copied into a real component. --- */
+.ds__wrong {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--accent);
+  background: var(--surface);
+  margin: var(--s4) 0;
+}
+
+.ds__wrong-green {
+  font-size: 1rem;
+  color: var(--ft-light);
+  background: var(--positive);
+  padding: var(--s3);
+  border-radius: var(--radius-md);
+  margin: var(--s4) 0 0;
+}
+
+@media (min-width: 48rem) {
+  .ds__fills {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .ds__fills {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

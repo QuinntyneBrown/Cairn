@@ -1,0 +1,77 @@
+<section class="tally" data-testid="vote-tally">
+  @if (!hasVotes()) {
+    <!-- Said once, plainly, and then the bars are still drawn at zero — the reader
+         came to see the shape of the result, and "nothing yet" is a shape. -->
+    <p class="tally__none" data-testid="tally-no-votes">No votes yet.</p>
+  }
+
+  @switch (results().responseType) {
+    @case ('Scale') {
+      <div class="scale">
+        <ol class="scale__cols" data-testid="tally-scale">
+          @for (column of scaleColumns(); track column.value) {
+            <li class="scale__col">
+              <span class="scale__count" data-testid="scale-count">{{ column.count }}</span>
+              <div class="scale__track">
+                <div
+                  class="scale__fill"
+                  [style.height.%]="column.height"
+                  [attr.data-testid]="'scale-fill-' + column.value"
+                ></div>
+              </div>
+              <span class="scale__value">{{ column.value }}</span>
+            </li>
+          }
+        </ol>
+
+        @if (average(); as mean) {
+          <p class="scale__average" data-testid="tally-average">
+            <span class="scale__average-label">Average</span>
+            <span class="scale__average-value">{{ mean | number: '1.0-1' }}</span>
+            <span class="scale__average-of">of 10</span>
+          </p>
+        }
+      </div>
+    }
+
+    @default {
+      <ul class="bars">
+        @for (row of rows(); track row.key) {
+          <li class="bars__row" [attr.data-testid]="'tally-row-' + row.key">
+            <!-- Label and numbers sit ABOVE the bar, never inside it. A count
+                 rendered on the fill would be unreadable on a short bar and would
+                 put text on a saturated colour, which the palette forbids. -->
+            <div class="bars__head">
+              <span class="bars__label">{{ row.label }}</span>
+              <span class="bars__figures">
+                <span class="bars__count" [attr.data-testid]="'tally-count-' + row.key">{{
+                  row.count
+                }}</span>
+                <span class="bars__percent">{{ row.percent }}%</span>
+              </span>
+            </div>
+
+            <div
+              class="bars__track"
+              role="meter"
+              [attr.aria-valuenow]="row.percent"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [attr.aria-label]="row.label + ': ' + row.count + ' votes, ' + row.percent + '%'"
+            >
+              <div
+                class="bars__fill"
+                [class.bars__fill--zero]="row.count === 0"
+                [style.width.%]="row.percent"
+              ></div>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  }
+
+  <p class="tally__total" data-testid="tally-total">
+    {{ totalVotes() }} {{ totalVotes() === 1 ? 'vote' : 'votes' }} cast
+  </p>
+</section>

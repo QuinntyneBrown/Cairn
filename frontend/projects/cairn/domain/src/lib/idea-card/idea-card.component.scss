@@ -1,0 +1,116 @@
+/* Mobile-first: everything stacks, and the meta row goes side by side at 48rem. */
+
+:host {
+  display: block;
+}
+
+.idea {
+  display: grid;
+  gap: var(--s3);
+}
+
+.idea__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.idea__title {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.idea__link {
+  color: inherit;
+}
+
+/* The card is the hit area on touch: stretch the title's link across it so the
+   whole thing is tappable without nesting interactive elements. */
+.idea__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+:host {
+  position: relative;
+}
+
+.idea__link:hover {
+  color: var(--text-muted);
+}
+
+.idea__meta {
+  display: grid;
+  gap: var(--s3);
+  margin: 0;
+  padding-top: var(--s3);
+  border-top: 1px solid var(--line);
+}
+
+.idea__metric-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.idea__metric-value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  margin: var(--s1) 0 0;
+}
+
+.idea__count {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.idea__of {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.idea__percent {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.idea__when {
+  margin: 0;
+}
+
+.idea__when-value {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.idea__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+@media (min-width: 48rem) {
+  .idea__meta {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+
+  .idea__when-value {
+    text-align: right;
+  }
+}

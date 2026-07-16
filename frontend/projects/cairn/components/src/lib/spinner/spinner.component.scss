@@ -1,0 +1,28 @@
+.spinner {
+  display: inline-flex;
+}
+
+.spinner__ring {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--line);
+  border-top-color: var(--line-strong);
+  border-radius: 50%;
+  animation: spinner-turn 0.7s linear infinite;
+}
+
+@keyframes spinner-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The global reset already flattens durations under reduced-motion, but this
+   library compiles without it — an endlessly spinning ring is exactly what that
+   preference exists to stop, so it is handled here too. */
+@media (prefers-reduced-motion: reduce) {
+  .spinner__ring {
+    animation: none;
+    border-top-color: var(--line);
+  }
+}

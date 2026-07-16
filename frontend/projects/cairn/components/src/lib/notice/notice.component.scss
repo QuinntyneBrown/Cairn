@@ -1,0 +1,47 @@
+/* Colour is carried by a solid bar down the side, not by tinting the text —
+   the tinted-text version of this component is where the contrast rule usually
+   gets broken. Text stays --text on --surface at all four kinds. */
+
+.notice {
+  display: flex;
+  gap: var(--s4);
+  align-items: stretch;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--s4);
+}
+
+.notice__bar {
+  flex: none;
+  width: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--info);
+}
+
+.notice--success .notice__bar {
+  background: var(--positive);
+}
+
+.notice--warning .notice__bar {
+  background: var(--warn);
+}
+
+.notice--error .notice__bar {
+  background: var(--negative);
+}
+
+.notice__body {
+  min-width: 0;
+}
+
+.notice__title {
+  margin: 0 0 var(--s1);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.notice__text {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}

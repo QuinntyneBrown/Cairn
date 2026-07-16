@@ -1,0 +1,24 @@
+<form class="form" (submit)="submit($event)" data-testid="comment-form">
+  <label class="sr-only" for="comment-body">Add a comment</label>
+  <textarea
+    class="form__input"
+    id="comment-body"
+    name="body"
+    rows="3"
+    placeholder="Add a comment…"
+    [value]="body()"
+    [disabled]="pending()"
+    (input)="onInput($event)"
+    data-testid="comment-input"
+  ></textarea>
+
+  @if (error(); as message) {
+    <p class="form__error" role="alert" data-testid="comment-error">{{ message }}</p>
+  }
+
+  <div class="form__actions">
+    <cai-button type="submit" [disabled]="!canSubmit()" data-testid="comment-submit">
+      {{ pending() ? 'Posting…' : 'Post comment' }}
+    </cai-button>
+  </div>
+</form>

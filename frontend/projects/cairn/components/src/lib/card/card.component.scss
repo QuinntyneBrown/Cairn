@@ -1,0 +1,28 @@
+/* Elevation is a hairline. That is the whole system — there is no shadow tier
+   above this one. Selection swaps the fill rather than raising the card. */
+
+.card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--s5);
+}
+
+.card--selected {
+  background: var(--accent);
+  border-color: var(--line-strong);
+  color: var(--text-on-fill);
+}
+
+.card--inverse {
+  background: var(--surface-inverse);
+  color: var(--text-on-inverse);
+  border-color: transparent;
+}
+
+@media (min-width: 48rem) {
+  .card {
+    padding: var(--s6);
+  }
+}

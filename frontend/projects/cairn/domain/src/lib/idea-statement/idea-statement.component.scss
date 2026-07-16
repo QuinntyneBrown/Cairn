@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.statement {
+  padding: var(--s6) var(--s5);
+  border-radius: var(--radius-xl);
+  background: var(--surface-inverse);
+  color: var(--text-on-inverse);
+}
+
+.statement__eyebrow {
+  margin: 0 0 var(--s3);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  /* The one place the accent earns its keep: a short label on a dark fill, where
+     Toronto yellow is legible and loud. It would be invisible on white. */
+  color: var(--accent);
+}
+
+.statement__title {
+  margin: 0;
+  /* Deliberately tighter and larger than the global h1 ramp. This heading is the
+     page, not a heading on a page. */
+  font-size: clamp(1.75rem, 6vw, 2.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.statement__body {
+  margin: var(--s4) 0 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  /* Sits back from the title without dropping to a grey that fails on dark. */
+  opacity: 0.78;
+}
+
+@media (min-width: 48rem) {
+  .statement {
+    padding: var(--s7) var(--s6);
+  }
+}

@@ -1,0 +1,103 @@
+/* Mobile-first: name over email with the tags beneath, going side by side at
+   48rem. A real table would need horizontal scrolling on a phone for three fields
+   that stack perfectly well. */
+
+:host {
+  display: block;
+}
+
+.head {
+  margin-bottom: var(--s5);
+}
+
+.head__title {
+  margin: var(--s1) 0 var(--s2);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  padding: var(--s8) 0;
+}
+
+.leads {
+  list-style: none;
+  margin: var(--s5) 0 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.lead {
+  display: grid;
+  gap: var(--s2);
+  padding: var(--s4);
+}
+
+.lead + .lead {
+  border-top: 1px solid var(--line);
+}
+
+.lead__who {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+/* `break-word` rather than `anywhere`: the latter lets min-content shrink to one
+   character, which collapses the name column to a letter per line when it is
+   squeezed. See voting-link-list.component.scss for the same trap. */
+.lead__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  overflow-wrap: break-word;
+}
+
+.lead__email {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  overflow-wrap: break-word;
+}
+
+.lead__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.lead__role {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2em 0.6em;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunk);
+  color: var(--text-muted);
+}
+
+.lead__access {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+/* Stated, not flagged. "Link only" is the normal case for most of the list, so it
+   gets no warning colour — the notice above the list carries the explanation. */
+.lead__access--link {
+  color: var(--text-muted);
+}
+
+@media (min-width: 48rem) {
+  .lead {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--s4);
+  }
+}

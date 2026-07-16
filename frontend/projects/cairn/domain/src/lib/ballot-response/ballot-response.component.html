@@ -1,0 +1,24 @@
+@switch (idea().responseType) {
+  @case ('YesNo') {
+    <cai-yes-no-response
+      [disabled]="disabled()"
+      [value]="yesNoValue()"
+      (answered)="answered.emit($event)"
+    />
+  }
+  @case ('Options') {
+    <cai-options-response
+      [options]="idea().options"
+      [disabled]="disabled()"
+      [value]="optionValue()"
+      (answered)="answered.emit($event)"
+    />
+  }
+  @case ('Scale') {
+    <cai-scale-response
+      [disabled]="disabled()"
+      [value]="scaleValue()"
+      (answered)="answered.emit($event)"
+    />
+  }
+}

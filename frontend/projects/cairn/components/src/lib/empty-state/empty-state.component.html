@@ -1,0 +1,11 @@
+<div class="empty dot-grid">
+  <p class="empty__title">{{ title() }}</p>
+
+  @if (message(); as messageText) {
+    <p class="empty__message">{{ messageText }}</p>
+  }
+
+  <div class="empty__action">
+    <ng-content />
+  </div>
+</div>

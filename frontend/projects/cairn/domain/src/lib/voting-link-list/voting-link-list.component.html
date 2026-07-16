@@ -1,0 +1,99 @@
+<!-- The one moment these URLs exist. Loud, un-dismissable, and copyable in bulk. -->
+@if (hasFresh()) {
+  <section class="fresh" data-testid="fresh-links">
+    <p class="fresh__title">
+      {{ freshLinks().length }} link{{ freshLinks().length === 1 ? '' : 's' }} ready to send
+    </p>
+    <p class="fresh__warning">
+      Copy these now. Only a hash is stored, so they cannot be shown again — if you
+      leave this page you will have to generate new ones, and generating a new link
+      breaks the old one.
+    </p>
+
+    <ul class="fresh__list">
+      @for (link of freshLinks(); track link.id) {
+        <li class="fresh__item" [attr.data-testid]="'fresh-link-' + link.id">
+          <span class="fresh__who">{{ link.displayName }}</span>
+          @if (link.url; as url) {
+            <cai-copy-button [value]="url" [attr.data-testid]="'copy-link-' + link.id" />
+            <p class="fresh__url">{{ url }}</p>
+          }
+        </li>
+      }
+    </ul>
+
+    <div class="fresh__row">
+      <cai-copy-button
+        [value]="allFreshUrls()"
+        label="Copy all"
+        copiedLabel="All copied"
+        data-testid="copy-all-links"
+      />
+    </div>
+  </section>
+}
+
+@if (links().length === 0) {
+  <p class="empty" data-testid="links-empty">
+    No voting links yet. Nobody can vote until a link is sent.
+  </p>
+} @else {
+  <p class="summary" data-testid="links-summary">
+    <span><span class="summary__figure">{{ activeCount() }}</span> active</span>
+    <span><span class="summary__figure">{{ votedCount() }}</span> voted</span>
+  </p>
+
+  <ul class="links" data-testid="voting-link-list">
+    @for (link of links(); track link.id) {
+      <li
+        class="link"
+        [class.link--revoked]="link.isRevoked"
+        [attr.data-testid]="'link-' + link.id"
+      >
+        <span class="link__who">
+          <span class="link__name">{{ link.displayName }}</span>
+          <span class="link__email">{{ link.email }}</span>
+        </span>
+
+        <span class="link__state">
+          @if (link.isRevoked) {
+            <span class="link__flag" data-testid="link-revoked">Revoked</span>
+          } @else if (link.hasVoted) {
+            <span class="link__flag link__flag--voted" data-testid="link-voted">Voted</span>
+          } @else {
+            <span class="link__flag" data-testid="link-waiting">Not voted</span>
+          }
+          <span class="link__expiry">Expires {{ link.expiresAt | date: 'd MMM' }}</span>
+        </span>
+
+        <!-- No copy button and no "reveal" here, at any state. Both would imply the
+             URL is retrievable; it is not, and offering a control that cannot work
+             is worse than offering none. -->
+        <span class="link__actions">
+          @if (!link.isRevoked) {
+            <cai-button
+              variant="ghost"
+              (click)="regenerated.emit(link)"
+              [attr.data-testid]="'regenerate-' + link.id"
+            >
+              Regenerate
+            </cai-button>
+            <cai-button
+              variant="ghost"
+              (click)="revoked.emit(link)"
+              [attr.data-testid]="'revoke-' + link.id"
+            >
+              Revoke
+            </cai-button>
+          }
+        </span>
+      </li>
+    }
+  </ul>
+
+  <p class="note" data-testid="links-note">
+    Links are stored as hashes and can never be shown again after they are
+    generated. Regenerating issues a fresh link and immediately breaks the previous
+    one, including for anyone part-way through voting.
+  </p>
+}

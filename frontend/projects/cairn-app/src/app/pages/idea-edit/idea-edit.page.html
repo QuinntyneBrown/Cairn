@@ -1,0 +1,35 @@
+<header class="head">
+  <p class="eyebrow">{{ isEdit() ? 'Editing' : 'New' }}</p>
+  <h1 class="head__title">{{ isEdit() ? 'Edit idea' : 'New idea' }}</h1>
+  <p class="lede measure">
+    An idea is one question and one way to answer it. Keep the question to the thing
+    you are actually deciding.
+  </p>
+</header>
+
+@if (loading()) {
+  <div class="state" data-testid="idea-edit-loading">
+    <cai-spinner label="Loading idea" />
+  </div>
+} @else if (loadFailed()) {
+  <cai-notice kind="error" title="We could not load this idea" data-testid="idea-edit-load-error">
+    It may have been deleted. Go back to the list and try again.
+  </cai-notice>
+} @else {
+  @if (generalError(); as message) {
+    <cai-notice kind="error" title="That did not save" data-testid="idea-edit-error">
+      {{ message }}
+    </cai-notice>
+  }
+
+  <div class="form-wrap">
+    <cai-idea-form
+      [idea]="idea()"
+      [hasVotes]="hasVotes()"
+      [pending]="pending()"
+      [errors]="errors()"
+      (saved)="save($event)"
+      (cancelled)="cancel()"
+    />
+  </div>
+}

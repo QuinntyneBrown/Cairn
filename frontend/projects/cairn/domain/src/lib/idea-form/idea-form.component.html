@@ -1,0 +1,197 @@
+<form class="form" (submit)="submit($event)" data-testid="idea-form">
+  <cai-field
+    label="Title"
+    for="idea-title"
+    [error]="serverError('Title') ?? (submitted() && !title().trim() ? 'A title is required.' : undefined)"
+  >
+    <input
+      class="input"
+      id="idea-title"
+      name="title"
+      type="text"
+      maxlength="200"
+      [value]="title()"
+      (input)="title.set($any($event.target).value)"
+      data-testid="idea-title"
+    />
+  </cai-field>
+
+  <cai-field
+    label="Description"
+    for="idea-description"
+    hint="What is being decided, and what a lead needs to know to answer."
+    [error]="serverError('Description')"
+  >
+    <textarea
+      class="input input--area"
+      id="idea-description"
+      name="description"
+      rows="4"
+      maxlength="4000"
+      [value]="description()"
+      (input)="description.set($any($event.target).value)"
+      data-testid="idea-description"
+    ></textarea>
+  </cai-field>
+
+  <!-- Response type. Locked once a vote exists — see the component doc. -->
+  <fieldset class="types" [disabled]="hasVotes()">
+    <legend class="types__legend">How should leads answer?</legend>
+
+    <div class="types__choices" role="radiogroup" aria-label="Response type">
+      @for (type of responseTypes; track type) {
+        <label
+          class="type"
+          [class.type--on]="responseType() === type"
+          [class.type--locked]="hasVotes()"
+          [attr.data-testid]="'response-type-' + type"
+        >
+          <input
+            class="sr-only"
+            type="radio"
+            name="responseType"
+            [value]="type"
+            [checked]="responseType() === type"
+            [disabled]="hasVotes()"
+            (change)="setResponseType(type)"
+          />
+          <span class="type__name">
+            @switch (type) {
+              @case ('YesNo') {
+                Yes / No
+              }
+              @case ('Options') {
+                Options
+              }
+              @case ('Scale') {
+                Scale 1–10
+              }
+            }
+          </span>
+        </label>
+      }
+    </div>
+
+    @if (hasVotes()) {
+      <p class="types__locked" data-testid="response-type-locked">
+        Votes have already been cast, so the response type is fixed. The answers on
+        record are shaped for it and cannot be reinterpreted. To ask a different
+        way, close this idea and open a new one.
+      </p>
+    }
+
+    @if (serverError('ResponseType'); as message) {
+      <p class="types__error" role="alert" data-testid="response-type-error">{{ message }}</p>
+    }
+  </fieldset>
+
+  <!-- Only ever rendered for Options, so "YesNo/Scale must have zero choices" is
+       structurally true rather than merely validated. -->
+  @if (isOptions()) {
+    <fieldset class="options">
+      <legend class="options__legend">Choices</legend>
+      <p class="options__hint">
+        At least two. The order here is the order leads see, and editing a label in
+        place keeps the votes already cast for it.
+      </p>
+
+      <ol class="options__list">
+        @for (option of options(); track $index) {
+          <li class="option">
+            <label class="sr-only" [attr.for]="'option-' + $index">Choice {{ $index + 1 }}</label>
+            <input
+              class="input"
+              [attr.id]="'option-' + $index"
+              type="text"
+              maxlength="200"
+              [value]="option"
+              (input)="updateOption($index, $any($event.target).value)"
+              [attr.data-testid]="'option-input-' + $index"
+            />
+
+            <span class="option__actions">
+              <button
+                class="option__btn"
+                type="button"
+                aria-label="Move up"
+                [disabled]="$index === 0"
+                (click)="move($index, -1)"
+                [attr.data-testid]="'option-up-' + $index"
+              >
+                ↑
+              </button>
+              <button
+                class="option__btn"
+                type="button"
+                aria-label="Move down"
+                [disabled]="$index === options().length - 1"
+                (click)="move($index, 1)"
+                [attr.data-testid]="'option-down-' + $index"
+              >
+                ↓
+              </button>
+              <button
+                class="option__btn"
+                type="button"
+                aria-label="Remove choice"
+                [disabled]="options().length <= 2"
+                (click)="removeOption($index)"
+                [attr.data-testid]="'option-remove-' + $index"
+              >
+                ✕
+              </button>
+            </span>
+          </li>
+        }
+      </ol>
+
+      <cai-button variant="secondary" (click)="addOption()" data-testid="option-add">
+        Add choice
+      </cai-button>
+
+      @if (serverError('Options'); as message) {
+        <p class="options__error" role="alert" data-testid="options-server-error">{{ message }}</p>
+      } @else if (submitted() && optionsError(); as message) {
+        <p class="options__error" role="alert" data-testid="options-error">{{ message }}</p>
+      }
+    </fieldset>
+  }
+
+  <div class="window">
+    <cai-field label="Opens" for="idea-opens" [error]="serverError('OpensAt')">
+      <input
+        class="input"
+        id="idea-opens"
+        type="datetime-local"
+        [value]="opensAt()"
+        (input)="opensAt.set($any($event.target).value)"
+        data-testid="idea-opens"
+      />
+    </cai-field>
+
+    <cai-field
+      label="Closes"
+      for="idea-closes"
+      hint="Status follows the clock — an idea opens and closes on its own."
+      [error]="serverError('ClosesAt') ?? (submitted() ? windowError() : undefined)"
+    >
+      <input
+        class="input"
+        id="idea-closes"
+        type="datetime-local"
+        [value]="closesAt()"
+        (input)="closesAt.set($any($event.target).value)"
+        data-testid="idea-closes"
+      />
+    </cai-field>
+  </div>
+
+  <div class="form__actions">
+    <cai-button variant="ghost" (click)="cancelled.emit()" data-testid="idea-cancel">
+      Cancel
+    </cai-button>
+    <cai-button type="submit" [disabled]="pending()" data-testid="idea-save">
+      {{ pending() ? 'Saving…' : 'Save idea' }}
+    </cai-button>
+  </div>
+</form>

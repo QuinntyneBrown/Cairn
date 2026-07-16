@@ -1,0 +1,69 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "paths": {
+      "@cairn/api": ["./projects/cairn/api/src/public-api.ts"],
+      "@cairn/components": ["./projects/cairn/components/src/public-api.ts"],
+      "@cairn/domain": ["./projects/cairn/domain/src/public-api.ts"],
+
+      /* The SignalR client, reachable WITHOUT going through the @cairn/api barrel.
+         This exists solely so it can be `import()`ed lazily, and the indirection is
+         the entire point: the barrel is in the eager graph (BALLOT_SERVICE and
+         friends live there), so `await import('@cairn/api')` would resolve straight
+         back into the eager chunk and bundle @microsoft/signalr — roughly 40kB
+         gzipped — into main, where every page pays for it including sign-in.
+         Addressing the module directly leaves it reachable only from the dynamic
+         import, so the bundler can put it in a chunk of its own.
+         See app/realtime/signalr-realtime.loader.ts. */
+      "@cairn/api/realtime/signalr": [
+        "./projects/cairn/api/src/lib/realtime/signalr-vote-realtime.service.ts"
+      ]
+    },
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/cairn-app/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/cairn-app/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/cairn/api/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/cairn/api/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/cairn/components/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/cairn/components/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/cairn/domain/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/cairn/domain/tsconfig.spec.json"
+    }
+  ]
+}
