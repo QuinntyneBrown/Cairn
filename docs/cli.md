@@ -4,6 +4,23 @@ A `System.CommandLine` console app that seeds data, manages ideas, mints voting 
 builds the results deck. It talks to the database directly rather than over HTTP — see
 [architecture.md](architecture.md#the-cli-talks-to-the-database-not-the-api).
 
+## Install as a local .NET tool
+
+Pack the tool, then restore it through the repository's tool manifest:
+
+```bash
+cd backend
+dotnet pack src/Cairn.Cli -c Release -o ../artifacts/packages
+cd ..
+dotnet tool restore --add-source artifacts/packages
+dotnet cairn --help
+```
+
+The manifest pins the local command to `Cairn.Cli` 1.0.0. The package is not published to
+NuGet.org, so a fresh checkout must be packed into `artifacts/packages` before restore.
+
+For day-to-day source development, the project remains directly runnable:
+
 ```bash
 cd backend
 dotnet run --project src/Cairn.Cli -- <command>

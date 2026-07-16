@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "cairn.cli": {
+      "version": "1.0.0",
+      "commands": [
+        "cairn"
+      ]
+    }
+  }
+}

@@ -8,6 +8,12 @@
     <ToolCommandName>cairn</ToolCommandName>
     <PackageId>Cairn.Cli</PackageId>
     <Version>1.0.0</Version>
+    <Authors>Cairn contributors</Authors>
+    <Description>Administrative CLI for the Cairn voting application.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/QuinntyneBrown/Cairn</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <StartupObject>Cairn.Cli.CliEntryPoint</StartupObject>
   </PropertyGroup>
 
@@ -24,10 +30,10 @@
 
   <ItemGroup>
     <!-- The CLI reads config from next to its own assembly, so this must travel with it —
-         including into the packed tool. -->
-    <Content Include="appsettings.json" CopyToOutputDirectory="PreserveNewest">
-      <PackagePath>tools/net10.0/any/</PackagePath>
-    </Content>
+         including into the packed tool. PackAsTool packages the publish output, so assigning
+         PackagePath here would add the same file twice and fail with NU5118. -->
+    <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\..\docs\cli.md" Pack="true" PackagePath="README.md" />
   </ItemGroup>
 
 </Project>

@@ -55,25 +55,54 @@ jobs:
           global-json-file: backend/global.json
 
       - name: Restore
-        run: dotnet restore backend/Cairn.sln
+        working-directory: backend
+        run: dotnet restore Cairn.sln
 
       - name: Build
-        run: dotnet build backend/Cairn.sln --configuration Release --no-restore
+        working-directory: backend
+        run: dotnet build Cairn.sln --configuration Release --no-restore
 
       - name: Test
+        working-directory: backend
         run: >-
-          dotnet test backend/Cairn.sln
+          dotnet test Cairn.sln
           --configuration Release
           --no-build
           --logger "trx;LogFileName=backend-tests.trx"
           --results-directory TestResults
 
-      - name: Publish API
+      - name: Pack CLI tool
+        working-directory: backend
         run: >-
-          dotnet publish backend/src/Cairn.Api/Cairn.Api.csproj
+          dotnet pack src/Cairn.Cli/Cairn.Cli.csproj
           --configuration Release
           --no-build
-          --output backend-publish
+          --output ../cli-package
+
+      - name: Install and smoke-test CLI tool
+        working-directory: backend
+        run: |
+          dotnet tool install Cairn.Cli \
+            --tool-path ../cli-smoke \
+            --version 1.0.0 \
+            --add-source ../cli-package
+          ../cli-smoke/cairn --version
+
+      - name: Upload CLI tool
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cairn-cli-${{ github.sha }}
+          path: cli-package/*.nupkg
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish API
+        working-directory: backend
+        run: >-
+          dotnet publish src/Cairn.Api/Cairn.Api.csproj
+          --configuration Release
+          --no-build
+          --output ../backend-publish
 
       - name: Upload API
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
