@@ -1,0 +1,230 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Superseded PR runs are disposable. A production deployment is allowed to finish.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DOTNET_NOLOGO: 'true'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+  NODE_VERSION: '22'
+
+jobs:
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: 'Y'
+          # Test-only credential for this short-lived service container.
+          MSSQL_SA_PASSWORD: 'Cairn_ci_2026!Sql'
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P 'Cairn_ci_2026!Sql' -Q 'SELECT 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 20
+          --health-start-period 30s
+
+    env:
+      CAIRN_TEST_MASTER_CONNECTION_STRING: >-
+        Server=localhost,1433;Database=master;User Id=sa;Password=Cairn_ci_2026!Sql;Encrypt=True;TrustServerCertificate=True
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: backend/global.json
+
+      - name: Restore
+        run: dotnet restore backend/Cairn.sln
+
+      - name: Build
+        run: dotnet build backend/Cairn.sln --configuration Release --no-restore
+
+      - name: Test
+        run: >-
+          dotnet test backend/Cairn.sln
+          --configuration Release
+          --no-build
+          --logger "trx;LogFileName=backend-tests.trx"
+          --results-directory TestResults
+
+      - name: Publish API
+        run: >-
+          dotnet publish backend/src/Cairn.Api/Cairn.Api.csproj
+          --configuration Release
+          --no-build
+          --output backend-publish
+
+      - name: Upload API
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: api-${{ github.sha }}
+          path: backend-publish
+          if-no-files-found: error
+          retention-days: 7
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Test
+        working-directory: frontend
+        run: npm test
+
+      - name: Build production SPA
+        working-directory: frontend
+        run: npm run build
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Test in Chromium
+        working-directory: frontend
+        run: npm run e2e
+
+      - name: Upload SPA
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: spa-${{ github.sha }}
+          path: frontend/dist/cairn-app/browser
+          if-no-files-found: error
+          retention-days: 7
+
+  package:
+    name: Package
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download API
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: api-${{ github.sha }}
+          path: app
+
+      - name: Download SPA
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: spa-${{ github.sha }}
+          path: spa
+
+      - name: Bundle SPA with API
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf app/wwwroot
+          mkdir -p app/wwwroot
+          cp -R spa/. app/wwwroot/
+          test -f app/Cairn.Api.dll
+          test -f app/wwwroot/index.html
+
+      - name: Upload deployable app
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cairn-app-${{ github.sha }}
+          path: app
+          if-no-files-found: error
+          retention-days: 30
+
+  deploy:
+    name: Deploy production
+    needs: package
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://${{ vars.AZURE_WEBAPP_NAME }}.azurewebsites.net
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download deployable app
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: cairn-app-${{ github.sha }}
+          path: app
+
+      - name: Sign in to Azure with OIDC
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3.0.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to App Service
+        uses: azure/webapps-deploy@02a81bead70021f5284939794bcec79c271ab383 # v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          package: app
+
+      - name: Verify production
+        shell: bash
+        env:
+          APP_URL: https://${{ vars.AZURE_WEBAPP_NAME }}.azurewebsites.net
+        run: |
+          set -euo pipefail
+
+          healthy=false
+          for attempt in $(seq 1 36); do
+            if curl --fail --silent --show-error --max-time 10 "$APP_URL/health" > health.json; then
+              healthy=true
+              break
+            fi
+            echo "Waiting for the application to become healthy ($attempt/36)..."
+            sleep 10
+          done
+
+          if [[ "$healthy" != 'true' ]]; then
+            echo 'The application did not become healthy after deployment.'
+            exit 1
+          fi
+
+          curl --fail --silent --show-error --max-time 20 "$APP_URL/" | grep --quiet '<cai-root'
+          curl --fail --silent --show-error --max-time 20 "$APP_URL/sign-in" | grep --quiet '<cai-root'
+
+          api_status=$(curl --silent --output /dev/null --write-out '%{http_code}' "$APP_URL/api/does-not-exist")
+          test "$api_status" = '404'
+
+      - name: Sign out of Azure
+        if: always()
+        run: az logout

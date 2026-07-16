@@ -5,6 +5,7 @@ ASP.NET Core backend. Team leads vote on ideas through unique expiring links tha
 login, and results land on a dashboard in real time over SignalR.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-107C10.svg)](LICENSE)
+[![CI/CD](https://github.com/QuinntyneBrown/Cairn/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/QuinntyneBrown/Cairn/actions/workflows/ci-cd.yml)
 [![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)](https://angular.dev/)
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-0078D4.svg)](CONTRIBUTING.md)
@@ -170,6 +171,7 @@ docs/                             Architecture, contract discipline, branding, a
 | [API contract](docs/api-contract.md) | Why the contract is recorded rather than authored, and how it is guarded |
 | [Branding](docs/branding.md) | FaithTech design tokens, the contrast rule, and the font licensing item |
 | [Admin CLI](docs/cli.md) | `cairn` command reference |
+| [CI/CD and Azure deployment](docs/deployment.md) | Pipeline, infrastructure, production bootstrap, and operations |
 | [Frontend workspace README](frontend/README.md) | Angular workspace commands |
 
 ## Contributing

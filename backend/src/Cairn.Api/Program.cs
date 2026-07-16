@@ -116,6 +116,11 @@ if (!app.Environment.IsEnvironment("Testing"))
 app.UseMiddleware<SecurityHeadersMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+// The production artifact puts Angular's browser bundle in wwwroot. Keep these inside the
+// security-header pipeline so index.html and every hashed asset receive the SPA CSP.
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -127,6 +132,51 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<VotingHub>("/hubs/voting");
+
+app.MapGet(
+        "/health",
+        async Task<IResult> (
+            AppDbContext db,
+            ILogger<Program> logger,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var canConnect = await db.Database.CanConnectAsync(cancellationToken);
+                return canConnect
+                    ? Results.Ok(new { status = "healthy" })
+                    : Results.Json(
+                        new { status = "unhealthy" },
+                        statusCode: StatusCodes.Status503ServiceUnavailable);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                logger.LogWarning(exception, "SQL health probe failed.");
+                return Results.Json(
+                    new { status = "unhealthy" },
+                    statusCode: StatusCodes.Status503ServiceUnavailable);
+            }
+        })
+    .AllowAnonymous();
+
+// Client-side routes have no extension and fall back to Angular's index. Reserve every
+// server-owned namespace first: a typo or missing API/SignalR route must remain a real 404,
+// never a misleading 200 containing HTML.
+static Task NotFound(HttpContext context)
+{
+    context.Response.StatusCode = StatusCodes.Status404NotFound;
+    return Task.CompletedTask;
+}
+
+app.MapFallback("/api/{**path}", NotFound);
+app.MapFallback("/hubs/{**path}", NotFound);
+app.MapFallback("/health/{**path}", NotFound);
+app.MapFallback("/openapi/{**path}", NotFound);
+app.MapFallbackToFile("index.html");
 
 app.Run();
 

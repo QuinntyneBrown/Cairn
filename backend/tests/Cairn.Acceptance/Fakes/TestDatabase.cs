@@ -12,19 +12,33 @@ namespace Cairn.Acceptance.Fakes;
 /// would let tests pass on data the real database rejects, which is the exact failure mode
 /// the schema was designed to prevent.
 ///
-/// Requires the same .\SQLEXPRESS the app itself uses.
+/// Uses the same .\SQLEXPRESS the app itself uses by default. CI can point it at a
+/// containerized SQL Server with CAIRN_TEST_MASTER_CONNECTION_STRING.
 /// </summary>
 public sealed class TestDatabase : IDisposable
 {
-    private const string MasterConnectionString =
+    private const string LocalMasterConnectionString =
         "Server=.\\SQLEXPRESS;Database=master;Trusted_Connection=True;TrustServerCertificate=True";
 
     private readonly string _databaseName = $"Cairn_Test_{Guid.NewGuid():N}";
+    private readonly string _masterConnectionString;
 
     public TestDatabase()
     {
-        ConnectionString =
-            $"Server=.\\SQLEXPRESS;Database={_databaseName};Trusted_Connection=True;TrustServerCertificate=True";
+        var configuredMaster = Environment.GetEnvironmentVariable("CAIRN_TEST_MASTER_CONNECTION_STRING");
+        var builder = new SqlConnectionStringBuilder(
+            string.IsNullOrWhiteSpace(configuredMaster)
+                ? LocalMasterConnectionString
+                : configuredMaster);
+
+        // The supplied value is a server/login contract. Pin the administrative connection
+        // to master, then retain every other setting (including SQL authentication used by
+        // the Linux container) for the uniquely named test database.
+        builder.InitialCatalog = "master";
+        _masterConnectionString = builder.ConnectionString;
+
+        builder.InitialCatalog = _databaseName;
+        ConnectionString = builder.ConnectionString;
     }
 
     public string ConnectionString { get; }
@@ -34,7 +48,7 @@ public sealed class TestDatabase : IDisposable
         try
         {
             SqlConnection.ClearAllPools();
-            Execute(MasterConnectionString, $"""
+            Execute(_masterConnectionString, $"""
                 IF DB_ID('{_databaseName}') IS NOT NULL
                 BEGIN
                     ALTER DATABASE [{_databaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
