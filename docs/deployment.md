@@ -80,13 +80,18 @@ $webApp = gh variable get AZURE_WEBAPP_NAME --repo QuinntyneBrown/Cairn
 $connection = az webapp config connection-string list `
   --resource-group $resourceGroup `
   --name $webApp `
-  --query "[?name=='Default'].connectionString | [0]" `
+  --query "[?name=='Default'].value | [0]" `
   --output tsv
 
+if ([string]::IsNullOrWhiteSpace($connection)) {
+  throw 'The App Service Default connection string was not found.'
+}
+
 $env:CAIRN_ConnectionStrings__Default = $connection
-dotnet run --project backend/src/Cairn.Cli -- `
-  lead create --admin --name '<name>' --email '<email>' --password '<strong-password>'
+$env:CAIRN_VoteLink__BaseUrl = "https://$webApp.azurewebsites.net"
+dotnet cairn lead create --admin --name '<name>' --email '<email>' --password '<strong-password>'
 Remove-Item Env:\CAIRN_ConnectionStrings__Default
+Remove-Item Env:\CAIRN_VoteLink__BaseUrl
 ```
 
 Do not run `db seed` against production. It creates sample records and known development

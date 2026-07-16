@@ -5,6 +5,7 @@
 [Rr]elease/
 dist/
 node_modules/
+artifacts/
 
 # Generated decks — `cairn deck build` writes these into the working directory
 *.pptx

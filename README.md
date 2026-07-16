@@ -10,7 +10,7 @@ login, and results land on a dashboard in real time over SignalR.
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-0078D4.svg)](CONTRIBUTING.md)
 
-[Documentation](#documentation) | [Contributing](CONTRIBUTING.md) | [Security](SECURITY.md) | [Support](SUPPORT.md)
+[Live site](https://cairn-app-w6wr6cdrxt2ig.azurewebsites.net) | [Documentation](#documentation) | [Contributing](CONTRIBUTING.md) | [Security](SECURITY.md) | [Support](SUPPORT.md)
 
 ## About the project
 
