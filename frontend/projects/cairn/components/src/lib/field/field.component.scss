@@ -1,6 +1,6 @@
-/* The projected control is styled from here via ::ng-deep-free descendant
-   selectors — the control is light DOM (ng-content), so plain descendant
-   selectors reach it under emulated encapsulation. */
+/* These styles are global (ViewEncapsulation.None on the component): the
+   projected control is light DOM, so scoped selectors would never reach it.
+   Everything here must stay under a `.field`-prefixed class. */
 
 .field {
   display: grid;
